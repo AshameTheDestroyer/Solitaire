@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { Deck } from "../Classes/Card";
 import CardElement from "../Card/CardElement";
-import "../GroupByImplementaion";
+import "../Classes/GroupByImplementaion";
 
 import "./DeckDisplayer.scss";
 

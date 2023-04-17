@@ -1,13 +1,13 @@
-$card-colours: "red", "black";
+$card-colours: colourful, colourless;
 $card-types: heart, diamond, club, spade;
 
 .card-element {
     $pseudo-element-offset: 0.75rem;
     $hover-scale: 1.1;
-    --red-colour: var(--main-colour);
-    --black-colour: var(--fore-colour);
-    --red-filter: var(--main-colour-filter);
-    --black-filter: none;
+    --colourful-colour: var(--main-colour);
+    --colourless-colour: var(--fore-colour);
+    --colourful-filter: var(--main-colour-filter);
+    --colourless-filter: none;
     --icon-url: url("");
 
     position: relative;
@@ -56,7 +56,7 @@ $card-types: heart, diamond, club, spade;
         inset: 0;
         transform: rotateY(180deg);
 
-        background-color: var(--red-colour);
+        background-color: var(--colourful-colour);
         background-image: url("../Icons/cards.svg");
         background-repeat: no-repeat;
         background-position: center;
