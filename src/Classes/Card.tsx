@@ -13,12 +13,12 @@ export default class Card {
     public colour: CardColour;
 
     constructor(props: CardConstructorProps) {
-        if ([CardType.RedJoker, CardType.BlackJoker].includes(props.type) &&
+        if ([CardType.ColourfulJoker, CardType.ColourlessJoker].includes(props.type) &&
             props.digit != CardDigit.Joker) {
             throw new Error("Joker types cannot have a digit that is not Joker.");
         }
 
-        if (![CardType.RedJoker, CardType.BlackJoker].includes(props.type) &&
+        if (![CardType.ColourfulJoker, CardType.ColourlessJoker].includes(props.type) &&
             props.digit == CardDigit.Joker) {
             throw new Error("Non-Joker types cannot have a digit that is Joker.");
         }

@@ -3,8 +3,8 @@ enum CardType {
     Diamond = "Diamond",
     Club = "Club",
     Spade = "Spade",
-    RedJoker = "Red Joker",
-    BlackJoker = "Black Joker",
+    ColourfulJoker = "Colourful Joker",
+    ColourlessJoker = "Colourless Joker",
 }
 
 export default CardType;
