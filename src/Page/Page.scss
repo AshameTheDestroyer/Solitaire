@@ -1,0 +1,9 @@
+#page {
+    $padding: 2rem;
+
+    min-height: calc(100vh - $padding * 2);
+
+    display: flex;
+    place-content: center;
+    place-items: center;
+}

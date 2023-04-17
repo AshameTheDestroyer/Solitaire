@@ -1,0 +1,200 @@
+$card-colours: "red", "black";
+$card-types: heart, diamond, club, spade;
+
+.card-element {
+    $pseudo-element-offset: 0.75rem;
+    $hover-scale: 1.1;
+    --red-colour: var(--main-colour);
+    --black-colour: var(--fore-colour);
+    --red-filter: var(--main-colour-filter);
+    --black-filter: none;
+    --icon-url: url("");
+
+    position: relative;
+
+    width: 100px;
+    aspect-ratio: 2 / 3;
+
+    display: flex;
+    place-content: center;
+    place-items: center;
+
+    background-color: var(--background-darker-colour);
+
+    border: 0.4rem solid var(--half-transparent);
+    border-radius: 1rem;
+
+    box-sizing: border-box;
+
+    transition: transform 500ms;
+
+    overflow: hidden;
+
+    cursor: pointer;
+
+    @each $card-colour in $card-colours {
+        &.#{$card-colour} {
+            color: var(--#{$card-colour}-colour);
+
+            .corner::after,
+            div:not(.corner) figure {
+                filter: var(--#{$card-colour}-filter);
+            }
+        }
+    }
+
+    @each $card-type in $card-types {
+        &.#{$card-type} {
+            --icon-url: url("../Icons/#{$card-type}.svg");
+        }
+    }
+
+    &::after {
+        content: "";
+
+        position: absolute;
+        inset: 0;
+        transform: rotateY(180deg);
+
+        background-color: var(--red-colour);
+        background-image: url("../Icons/cards.svg");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 80%;
+
+        opacity: 0;
+
+        transition: transform 500ms, opacity 500ms;
+    }
+
+    &:hover {
+        transform: scale($hover-scale);
+    }
+
+    &.flipped {
+        transform: rotateY(180deg);
+
+        &::after {
+            transform: rotateY(0deg);
+
+            opacity: 1;
+        }
+
+        &:hover {
+            transform: rotateY(180deg) scale($hover-scale);
+        }
+    }
+
+    &[data-digit=Joker] .corner {
+        text-transform: uppercase;
+
+        width: 1ch;
+
+        line-break: anywhere;
+
+        &::after {
+            content: none;
+        }
+    }
+
+    .corner {
+        position: absolute;
+
+        width: 1.6rem;
+
+        &:nth-child(1) {
+            top: $pseudo-element-offset;
+            left: $pseudo-element-offset;
+        }
+
+        &:nth-child(2) {
+            bottom: $pseudo-element-offset;
+            right: $pseudo-element-offset;
+            transform: rotate(180deg);
+        }
+
+        &::after {
+            content: "";
+
+            position: absolute;
+            top: 2.6rem;
+            left: 0;
+
+            height: 1rem;
+            aspect-ratio: 1;
+
+            background-image: var(--icon-url);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 100%;
+        }
+    }
+
+    .figure-container {
+        display: flex;
+        flex-direction: column;
+        place-content: center space-between;
+        place-items: center space-between;
+
+        height: 60%;
+
+        &:nth-child(4) figure:nth-child(n + 2),
+        &:not(:nth-child(4)) figure:nth-child(n + 3) {
+            transform: rotate(180deg);
+        }
+
+        &.centred {
+            place-content: center;
+            place-items: center;
+        }
+
+        &.shortened-for-7 {
+            height: 35%;
+        }
+
+        &.shortened-for-10 {
+            height: 42.5%;
+        }
+
+        &.enlarged {
+            width: 75%;
+
+            figure {
+                width: 100%;
+            }
+        }
+
+        &.has-middle-figure figure:nth-child(2) {
+            transform: none;
+        }
+
+        figure {
+            width: 1.25rem;
+            aspect-ratio: 1;
+
+            background-image: var(--icon-url);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 100%;
+        }
+    }
+
+    .emphasized-text {
+        $scale: 1.75;
+        $offsetX: 12%;
+        $offsetY: 50%;
+        $skew: 20deg;
+
+        font-size: xx-large;
+        transform: translate($offsetX, calc(-1 * $offsetY)) scale($scale) skewY($skew);
+
+        &:nth-child(4) {
+            transform: translate(calc(-1 * $offsetX), $offsetY) rotate(180deg) scale($scale) skewY(calc(-1 * $skew));
+        }
+
+        &.joker {
+            transform: translateY(-10%) rotate(90deg) scale($scale);
+            letter-spacing: -0.25ch;
+        }
+    }
+}

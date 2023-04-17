@@ -1,0 +1,19 @@
+.link-button {
+    $padding: 2rem;
+    --character-count: 0;
+
+    position: relative;
+
+    min-width: calc(var(--character-count) * 1ch + $padding * 2);
+
+    padding: $padding;
+
+    a {
+        position: absolute;
+        inset: 0;
+
+        display: flex;
+        place-content: center;
+        place-items: center;
+    }
+}
