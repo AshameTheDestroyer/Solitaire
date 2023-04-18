@@ -79,10 +79,9 @@ function GroupDisplayer({
                     <section key={i}>
                         <h1>{groupingFactor}</h1>
                         <div> {
-                            cards.map((card, j) =>
-                                <CardElement card={card} key={`${i}${j}`} />)
-                        }
-                        </div>
+                            cards.map(card =>
+                                <CardElement card={card} key={`${card.digit} ${card.type}`} />)
+                        } </div>
                     </section>
                 )
         } </section>

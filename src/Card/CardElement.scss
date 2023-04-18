@@ -1,3 +1,5 @@
+@use "../Page/Page.scss";
+
 $card-colours: colourful, colourless;
 $card-types: heart, diamond, club, spade;
 
@@ -99,6 +101,8 @@ $card-types: heart, diamond, club, spade;
     }
 
     .corner {
+        font-size: x-small;
+
         position: absolute;
 
         width: 10%;
@@ -194,21 +198,36 @@ $card-types: heart, diamond, club, spade;
 
     .emphasized-text {
         $scale: 1.75;
-        $offsetX: 28%;
-        $offsetY: 50%;
         $skew: 20deg;
+        --offsetX: 60%;
+        --offsetY: 50%;
 
-        font-size: 125%;
+        font-size: 80%;
 
-        transform: translate($offsetX, calc(-1 * $offsetY)) scale($scale) skewY($skew);
+        transform: translate(var(--offsetX), calc(-1 * var(--offsetY))) scale($scale) skewY($skew);
 
         &:nth-child(4) {
-            transform: translate(calc(-1 * $offsetX), $offsetY) rotate(180deg) scale($scale) skewY(calc(-1 * $skew));
+            transform: translate(calc(-1 * var(--offsetX)), var(--offsetY)) rotate(180deg) scale($scale) skewY(calc(-1 * $skew));
         }
 
         &.joker {
             transform: translateY(-10%) rotate(90deg) scale($scale);
             letter-spacing: -0.25ch;
+        }
+    }
+}
+
+@media (width >=Page.$second-screen-width) {
+    .card-element {
+
+        .corner {
+            font-size: medium;
+        }
+
+        .emphasized-text {
+            --offsetX: 28%;
+
+            font-size: 125%;
         }
     }
 }
