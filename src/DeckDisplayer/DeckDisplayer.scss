@@ -1,28 +1,97 @@
 #deck-displayer {
-    $padding: 5rem;
-
-    min-height: calc(100vh - $padding * 2);
+    min-height: 100vh;
 
     display: flex;
     flex-wrap: wrap;
-    place-content: center;
-    place-items: center;
-    gap: 5rem;
+    place-content: start center;
+    place-items: start center;
+    gap: 2rem;
 
-    padding: $padding;
+    nav {
+        $padding: 4rem;
 
-    section {
-        width: 70%;
+        position: sticky;
+        top: 0;
+
+        width: calc(100% - $padding * 2);
+        height: 10rem;
 
         display: flex;
         flex-direction: column;
-        flex-wrap: wrap;
+        place-content: start center;
+        place-items: start center;
         gap: 2rem;
 
-        div {
-            display: flex;
-            flex-wrap: wrap;
+        padding: calc($padding / 2) $padding;
+        margin-bottom: -2rem;
+
+        background-color: var(--background-darker-colour);
+
+        z-index: 1;
+
+        &>section {
+            width: 100%;
+
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            place-content: center;
+            place-items: center;
             gap: 1rem;
+
+            button {
+                text-transform: capitalize;
+
+                width: 100%;
+
+                background-color: transparent;
+
+                border-radius: 0;
+                border: none;
+
+                transition: color 500ms, background-color 500ms;
+
+                &:is(:hover, :focus-within) {
+                    background-color: var(--background-colour);
+
+                    &.selected {
+                        color: var(--main-colour);
+                        background-color: var(--fore-colour);
+                    }
+                }
+
+                &.selected {
+                    background-color: var(--main-colour);
+                }
+            }
+        }
+    }
+
+    #group-displayer {
+        display: flex;
+        flex-direction: column;
+        place-content: center;
+        place-items: center;
+        gap: inherit;
+
+        padding: 2rem;
+
+        &>section {
+            width: 70%;
+
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            place-content: center;
+            place-items: center;
+            gap: 2rem;
+
+            &>div {
+                display: flex;
+                flex-wrap: wrap;
+                place-content: center;
+                place-items: center;
+                gap: 1rem;
+            }
         }
     }
 }

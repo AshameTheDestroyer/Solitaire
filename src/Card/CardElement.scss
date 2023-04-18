@@ -12,12 +12,13 @@ $card-types: heart, diamond, club, spade;
 
     position: relative;
 
-    width: 100px;
+    width: 15vmin;
     aspect-ratio: 2 / 3;
 
     display: flex;
     place-content: center;
     place-items: center;
+    gap: 1rem;
 
     background-color: var(--background-darker-colour);
 
@@ -100,7 +101,7 @@ $card-types: heart, diamond, club, spade;
     .corner {
         position: absolute;
 
-        width: 1.6rem;
+        width: 10%;
 
         &:nth-child(1) {
             top: $pseudo-element-offset;
@@ -117,10 +118,11 @@ $card-types: heart, diamond, club, spade;
             content: "";
 
             position: absolute;
-            top: 2.6rem;
-            left: 0;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
 
-            height: 1rem;
+            width: 150%;
             aspect-ratio: 1;
 
             background-image: var(--icon-url);
@@ -131,12 +133,23 @@ $card-types: heart, diamond, club, spade;
     }
 
     .figure-container {
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+
+        height: 55%;
+        width: calc(75% / 3);
+
         display: flex;
         flex-direction: column;
         place-content: center space-between;
-        place-items: center space-between;
+        place-items: center;
 
-        height: 60%;
+        @for $i from 1 through 3 {
+            &:nth-child(#{calc($i) + 2}) {
+                left: calc(50% + ($i - 2) * 15%);
+            }
+        }
 
         &:nth-child(4) figure:nth-child(n + 2),
         &:not(:nth-child(4)) figure:nth-child(n + 3) {
@@ -153,7 +166,7 @@ $card-types: heart, diamond, club, spade;
         }
 
         &.shortened-for-10 {
-            height: 42.5%;
+            height: 47.5%;
         }
 
         &.enlarged {
@@ -169,7 +182,7 @@ $card-types: heart, diamond, club, spade;
         }
 
         figure {
-            width: 1.25rem;
+            width: 60%;
             aspect-ratio: 1;
 
             background-image: var(--icon-url);
@@ -181,11 +194,12 @@ $card-types: heart, diamond, club, spade;
 
     .emphasized-text {
         $scale: 1.75;
-        $offsetX: 12%;
+        $offsetX: 28%;
         $offsetY: 50%;
         $skew: 20deg;
 
-        font-size: xx-large;
+        font-size: 125%;
+
         transform: translate($offsetX, calc(-1 * $offsetY)) scale($scale) skewY($skew);
 
         &:nth-child(4) {

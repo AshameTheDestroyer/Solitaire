@@ -47,8 +47,8 @@ function NumericFigureDisplayer({
                     <div className={
                         "figure-container " +
                         `${isInMiddle && count == 1 && card.number != 7 ? "centred" : ""} ` +
-                        `${isInMiddle && card.number >= 7 ? "shortened-for-7" : ""} ` +
-                        `${isInMiddle && card.number >= 10 ? "shortened-for-10" : ""} ` +
+                        `${isInMiddle && card.number == 7 ? "shortened-for-7" : ""} ` +
+                        `${isInMiddle && card.number == 10 ? "shortened-for-10" : ""} ` +
                         `${isInMiddle && card.number == 1 ? "enlarged" : ""} ` +
                         `${isInMiddle && count == 3 ? "has-middle-figure" : ""}`
                     } key={i}> {
