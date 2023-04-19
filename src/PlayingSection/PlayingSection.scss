@@ -50,7 +50,7 @@
                 animation-direction: normal;
                 animation-fill-mode: forwards;
 
-                @for $i from 1 through Page.$playing-pile-count +1 {
+                @for $i from 1 through calc(Page.$playing-pile-count + 1) {
 
                     &:nth-child(#{$i}) {
                         animation-delay: calc($delay * (Page.$playing-pile-count + 1) + $delay * (Page.$playing-pile-count - $i + 1));
