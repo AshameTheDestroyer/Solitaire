@@ -11,6 +11,7 @@ $card-types: heart, diamond, club, spade;
     $padding: 2rem;
 
     min-height: calc(100vh - $padding * 2);
+    min-height: calc(100dvh - $padding * 2);
 
     display: flex;
     place-content: center;
