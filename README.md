@@ -5,3 +5,5 @@ I'm revisiting TypeScript with React-TS, and I found it pretty good actually, th
 v1. I made the playing cards with SCSS and SVGs, it was pretty fun TBH.
 
 v2. I'm experimenting with TypeScript and I made some logic to reorganize the Card Deck in 3 possible ways.
+
+v3. I've initialized the gameboard to make it playable later on, and furthermore, I tweaked the cards aspect a little bit for mobile devices.
