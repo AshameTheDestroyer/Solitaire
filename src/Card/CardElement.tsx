@@ -20,7 +20,7 @@ export default function CardElement({ card }: CardElementProps) {
             {
                 !Number.isNaN(card.number) ?
                     <NumericFigureDisplayer card={card} /> :
-                    <NonNumericFigureDisplayer card={card} />
+                    <figure />
             }
         </div>
     );
@@ -61,15 +61,4 @@ function NumericFigureDisplayer({
             })
         } </>
     );
-}
-
-function NonNumericFigureDisplayer({
-    card
-}: CardElementProps) {
-    return card.digit != CardDigit.Joker ? (
-        <>
-            <div className="emphasized-text">{card.digit}</div>
-            <div className="emphasized-text">{card.digit}</div>
-        </>
-    ) : (<div className="emphasized-text joker">XXX</div>);
 }

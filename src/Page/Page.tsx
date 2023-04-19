@@ -7,7 +7,10 @@ import LinkButton from "../LinkButton/LinkButton";
 export default function Page() {
     return (
         <main id="page">
-            <LinkButton href="./DeckDisplayer" text="Deck Displayer" />
+            <section>
+                <LinkButton href="./Gameboard" text="Play" />
+                <LinkButton href="./DeckDisplayer" text="Deck Displayer" />
+            </section>
         </main>
     );
 }

@@ -2,10 +2,13 @@
 
 $card-colours: colourful, colourless;
 $card-types: heart, diamond, club, spade;
+$non-numeric-digits: J, Q, K, Joker;
+$non-numeric-digit-icons: sword_2, crown_queen, crown_king, joker;
 
 .card-element {
     $pseudo-element-offset: 0.75rem;
     $hover-scale: 1.1;
+    $large-icon-width: 60%;
     --colourful-colour: var(--main-colour);
     --colourless-colour: var(--fore-colour);
     --colourful-filter: var(--main-colour-filter);
@@ -40,7 +43,7 @@ $card-types: heart, diamond, club, spade;
             color: var(--#{$card-colour}-colour);
 
             .corner::after,
-            div:not(.corner) figure {
+            figure {
                 filter: var(--#{$card-colour}-filter);
             }
         }
@@ -49,6 +52,12 @@ $card-types: heart, diamond, club, spade;
     @each $card-type in $card-types {
         &.#{$card-type} {
             --icon-url: url("../Icons/#{$card-type}.svg");
+        }
+    }
+
+    @for $i from 1 through length($list: $non-numeric-digits) {
+        &[data-digit=#{nth($list: $non-numeric-digits, $n: $i)}]>figure {
+            --icon-url: url("../Icons/#{nth($list: $non-numeric-digit-icons, $n: $i)}.svg");
         }
     }
 
@@ -174,7 +183,7 @@ $card-types: heart, diamond, club, spade;
         }
 
         &.enlarged {
-            width: 75%;
+            width: $large-icon-width;
 
             figure {
                 width: 100%;
@@ -196,24 +205,16 @@ $card-types: heart, diamond, club, spade;
         }
     }
 
-    .emphasized-text {
-        $scale: 1.75;
-        $skew: 20deg;
-        --offsetX: 60%;
-        --offsetY: 50%;
+    &>figure {
+        --icon-url: url("../Icons/joker.svg");
 
-        font-size: 80%;
+        width: $large-icon-width;
+        aspect-ratio: 1;
 
-        transform: translate(var(--offsetX), calc(-1 * var(--offsetY))) scale($scale) skewY($skew);
-
-        &:nth-child(4) {
-            transform: translate(calc(-1 * var(--offsetX)), var(--offsetY)) rotate(180deg) scale($scale) skewY(calc(-1 * $skew));
-        }
-
-        &.joker {
-            transform: translateY(-10%) rotate(90deg) scale($scale);
-            letter-spacing: -0.25ch;
-        }
+        background-image: var(--icon-url);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 100%;
     }
 }
 

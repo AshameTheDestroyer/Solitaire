@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
+import React, { useState, useEffect, } from "react";
 
 import Card, { Deck } from "../Classes/Card";
 import CardElement from "../Card/CardElement";
@@ -7,6 +7,7 @@ import CardDigit from "../Classes/CardDigit";
 import "../Classes/GroupByImplementaion";
 
 import "./DeckDisplayer.scss";
+import LinkButton from "../LinkButton/LinkButton";
 
 export default function DeckDisplayer() {
     const [GroupingPredicate, setGroupingPredicate] = useState<(card: Card) => any>();
@@ -19,47 +20,52 @@ export default function DeckDisplayer() {
 
     return (
         <main id="deck-displayer">
-            <Navbar setGroupingPredicate={setGroupingPredicate} />
+            <Header setGroupingPredicate={setGroupingPredicate} />
             <GroupDisplayer GroupingPredicate={GroupingPredicate} />
         </main>
     );
 }
 
-type NavbarProps = {
+type HeaderProps = {
     setGroupingPredicate: React.Dispatch<
         React.SetStateAction<((card: Card) => any) | undefined>>;
 };
 
-function Navbar({
+function Header({
     setGroupingPredicate
-}: NavbarProps) {
-    return (
-        <nav>
-            <h1>Card Deck</h1>
+}: HeaderProps) {
+    function ButtonClick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>, property: String) {
+        const GROUPING_BUTTONS =
+            document.querySelectorAll(".grouping-button");
 
-            <section> {
+        GROUPING_BUTTONS.forEach(groupingButton =>
+            groupingButton.classList.remove("selected"));
+
+        e.currentTarget.classList.add("selected");
+
+        setGroupingPredicate((value: React.SetStateAction<((card: Card) => any) | undefined>) =>
+            // @ts-ignore
+            (card: Card): any => card[property]);
+    }
+
+    return (
+        <header>
+            <section>
+                <h1>Card Deck</h1>
+                <LinkButton text="Home" href="/" />
+            </section>
+
+            <nav> {
                 Object.getOwnPropertyNames(new Card({ digit: CardDigit.Ace, type: CardType.Heart }))
                     .map((property, i) =>
                         <button className={`grouping-button ${i == 1 ? "selected" : ""}`}
                             key={property}
-                            onClick={e => {
-                                const GROUPING_BUTTONS =
-                                    document.querySelectorAll(".grouping-button");
-
-                                GROUPING_BUTTONS.forEach(groupingButton =>
-                                    groupingButton.classList.remove("selected"));
-
-                                e.currentTarget.classList.add("selected");
-
-                                setGroupingPredicate((value: React.SetStateAction<((card: Card) => any) | undefined>) =>
-                                    // @ts-ignore
-                                    (card: Card): any => card[property]);
-                            }}>
+                            onClick={e => ButtonClick(e, property)}>
                             {property}
                         </button>
                     )
-            } </section>
-        </nav>
+            } </nav>
+        </header>
     );
 }
 
