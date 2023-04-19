@@ -210,7 +210,7 @@ $non-numeric-digit-icons: sword_2, crown_queen, crown_king, joker;
     }
 }
 
-@media (width <=Page.$second-screen-width) {
+@media (width <=Page.$second-screen-width) or (orientation: portrait) {
     .card-element {
 
         @each $card-type in Page.$card-types {
