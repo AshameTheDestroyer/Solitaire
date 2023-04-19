@@ -5,14 +5,27 @@ import Card from "../Classes/Card";
 import "./CardElement.scss";
 
 type CardElementProps = {
-    card: Card
+    card: Card;
+    isFlipped?: boolean;
+    isFlippable?: boolean;
 };
 
-export default function CardElement({ card }: CardElementProps) {
+export default function CardElement({
+    card,
+    isFlipped = false,
+    isFlippable = true,
+}: CardElementProps) {
     return (
-        <div className={`card-element ${card.colour.toLowerCase()} ${card.type.toLowerCase()}`}
+        <div className={
+            `card-element ` +
+            `${card.colour.toLowerCase()} ` +
+            `${card.type.toLowerCase()} ` +
+            `${isFlipped ? "flipped" : ""}`}
+
             data-digit={card.digit}
-            onClick={e => e.currentTarget.classList.toggle("flipped")}>
+            onClick={e =>
+                isFlippable
+                && e.currentTarget.classList.toggle("flipped")}>
             <div className="corner">{card.digit}</div>
             <div className="corner">{card.digit}</div>
 
@@ -40,7 +53,9 @@ function NumericFigureDisplayer({
                     case 10: count = isInMiddle ? 2 : count; break;
                 }
 
-                return !Number.isNaN(card.number) ? (
+                if (Number.isNaN(card.number)) { return undefined; }
+
+                return (
                     <div className={
                         "figure-container " +
                         `${isInMiddle && count == 1 && card.number != 7 ? "centred" : ""} ` +
@@ -54,7 +69,7 @@ function NumericFigureDisplayer({
                                 .map((_, i) => <figure key={i} />)
                         }
                     </div>
-                ) : (<></>);
+                );
             })
         } </>
     );

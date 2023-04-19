@@ -1,6 +1,11 @@
 @use "../Page/Page.scss";
 
 .card-placeholder-element {
+    --border-thickness: 0.4rem;
+    --density: 50%;
+
+    position: relative;
+
     width: Page.$card-element-width;
     aspect-ratio: Page.$card-element-aspect-ratio;
 
@@ -10,12 +15,10 @@
 
     background-color: var(--background-darker-colour);
 
-    border: 0.4rem solid var(--background-colour);
+    border: var(--border-thickness) solid var(--background-colour);
     border-radius: 1rem;
 
     box-sizing: border-box;
-
-    overflow: hidden;
 
     @each $card-type in Page.$card-types {
         &.#{$card-type}>figure {
@@ -44,5 +47,17 @@
         background-size: 100%;
 
         opacity: 0.15;
+    }
+
+    .card-element {
+        position: absolute;
+        left: calc(var(--border-thickness) * -1);
+
+        @for $i from 1 through Page.$card-count {
+
+            &:nth-child(#{calc($i + 1)}) {
+                top: calc(var(--border-thickness) * -1 + ($i - 1) * var(--density));
+            }
+        }
     }
 }

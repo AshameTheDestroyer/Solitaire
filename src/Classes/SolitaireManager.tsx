@@ -20,19 +20,27 @@ export default class SolitaireManager {
     public static readonly PLAYING_PILE_COUNT = 7;
 
     private constructor() {
-        this.deck = [...Deck];
+        this.deck = [...Deck].filter(card =>
+            !card.type.toString().includes("Joker"));
 
         this.foundationPiles = new Array<Array<Card>>(
-            SolitaireManager.FOUNDATION_PILE_COUNT);
+            SolitaireManager.FOUNDATION_PILE_COUNT)
+            .fill([])
+            .map(_ => new Array<Card>());
 
         this.playingPiles = new Array<Array<Card>>(
-            SolitaireManager.PLAYING_PILE_COUNT);
+            SolitaireManager.PLAYING_PILE_COUNT)
+            .fill([])
+            .map(_ => new Array<Card>());
 
         this.reservedPiles = new Array<Card>();
     }
 
     public static Start(): void {
+        this.Reset();
+
         this.Instance.ShuffleDeck();
+        this.Instance.DistributeDeck();
     }
 
     public static Reset(): void {
@@ -46,7 +54,10 @@ export default class SolitaireManager {
     private DistributeDeck(): void {
         for (let i: number = 0; i < SolitaireManager.PLAYING_PILE_COUNT; i++) {
             for (let j: number = i; j < SolitaireManager.PLAYING_PILE_COUNT; j++) {
+                let card: Card | undefined = this.deck.pop();
+                if (card == undefined) { continue; }
 
+                this.playingPiles[j]?.push(card);
             }
         }
     }

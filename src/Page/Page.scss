@@ -1,11 +1,13 @@
 $first-screen-width: 800px;
 $second-screen-width: 520px;
 
+$card-count: 54;
 $card-element-width: 10vmin;
 $card-element-aspect-ratio: calc(2 / 3);
 $card-large-icon-width: 60%;
 $card-colours: colourful, colourless;
 $card-types: heart, diamond, club, spade;
+$playing-pile-count: 7;
 
 #page {
     $padding: 2rem;

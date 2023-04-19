@@ -4,7 +4,7 @@ $non-numeric-digits: J, Q, K, Joker;
 $non-numeric-digit-icons: sword_2, crown_queen, crown_king, joker;
 
 .card-element {
-    $pseudo-element-offset: 0.75rem;
+    $pseudo-element-offset: 0.5rem;
     $hover-scale: 1.1;
     --colourful-colour: var(--main-colour);
     --colourless-colour: var(--fore-colour);
@@ -34,7 +34,10 @@ $non-numeric-digit-icons: sword_2, crown_queen, crown_king, joker;
 
     cursor: pointer;
 
+    z-index: 1;
+
     @each $card-colour in Page.$card-colours {
+
         &.#{$card-colour} {
             color: var(--#{$card-colour}-colour);
 
@@ -46,12 +49,14 @@ $non-numeric-digit-icons: sword_2, crown_queen, crown_king, joker;
     }
 
     @each $card-type in Page.$card-types {
+
         &.#{$card-type} {
             --icon-url: url("../Icons/#{$card-type}.svg");
         }
     }
 
     @for $i from 1 through length($list: $non-numeric-digits) {
+
         &[data-digit=#{nth($list: $non-numeric-digits, $n: $i)}]>figure {
             --icon-url: url("../Icons/#{nth($list: $non-numeric-digit-icons, $n: $i)}.svg") !important;
         }
@@ -95,10 +100,6 @@ $non-numeric-digit-icons: sword_2, crown_queen, crown_king, joker;
 
     &[data-digit=Joker] .corner {
         text-transform: uppercase;
-
-        &::after {
-            content: none;
-        }
     }
 
     .corner {
@@ -106,7 +107,7 @@ $non-numeric-digit-icons: sword_2, crown_queen, crown_king, joker;
 
         position: absolute;
 
-        width: 10%;
+        width: calc(100% - $pseudo-element-offset * 2);
 
         &:nth-child(1) {
             top: $pseudo-element-offset;
@@ -119,15 +120,15 @@ $non-numeric-digit-icons: sword_2, crown_queen, crown_king, joker;
             transform: rotate(180deg);
         }
 
-        &::after {
+        &:first-child::after {
             content: "";
 
             position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
 
-            width: 150%;
+            width: 25%;
             aspect-ratio: 1;
 
             background-image: var(--icon-url);
@@ -151,6 +152,7 @@ $non-numeric-digit-icons: sword_2, crown_queen, crown_king, joker;
         place-items: center;
 
         @for $i from 1 through 3 {
+
             &:nth-child(#{calc($i) + 2}) {
                 left: calc(50% + ($i - 2) * 15%);
             }
@@ -229,8 +231,6 @@ $non-numeric-digit-icons: sword_2, crown_queen, crown_king, joker;
 
         .corner {
             font-size: x-small;
-
-            width: 20%;
 
             &:nth-child(2) {
                 display: none;
