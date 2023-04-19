@@ -16,8 +16,9 @@ export default function CardElement({ card }: CardElementProps) {
             <div className="corner">{card.digit}</div>
             <div className="corner">{card.digit}</div>
 
-            {!Number.isNaN(card.number) ?
-                <NumericFigureDisplayer card={card} /> : <figure />}
+            <NumericFigureDisplayer card={card} />
+
+            <figure />
         </div>
     );
 }

@@ -53,7 +53,7 @@ $non-numeric-digit-icons: sword_2, crown_queen, crown_king, joker;
 
     @for $i from 1 through length($list: $non-numeric-digits) {
         &[data-digit=#{nth($list: $non-numeric-digits, $n: $i)}]>figure {
-            --icon-url: url("../Icons/#{nth($list: $non-numeric-digit-icons, $n: $i)}.svg");
+            --icon-url: url("../Icons/#{nth($list: $non-numeric-digit-icons, $n: $i)}.svg") !important;
         }
     }
 
@@ -102,7 +102,7 @@ $non-numeric-digit-icons: sword_2, crown_queen, crown_king, joker;
     }
 
     .corner {
-        font-size: x-small;
+        font-size: medium;
 
         position: absolute;
 
@@ -198,7 +198,7 @@ $non-numeric-digit-icons: sword_2, crown_queen, crown_king, joker;
     }
 
     &>figure {
-        --icon-url: url("../Icons/joker.svg");
+        --icon-url: url("");
 
         width: Page.$card-large-icon-width;
         aspect-ratio: 1;
@@ -210,17 +210,39 @@ $non-numeric-digit-icons: sword_2, crown_queen, crown_king, joker;
     }
 }
 
-@media (width >=Page.$second-screen-width) {
+@media (width <=Page.$second-screen-width) {
     .card-element {
 
-        .corner {
-            font-size: medium;
+        @each $card-type in Page.$card-types {
+            &.#{$card-type}>figure {
+                --icon-url: url("../Icons/#{$card-type}.svg");
+            }
         }
 
-        .emphasized-text {
-            --offsetX: 28%;
+        &[data-digit=Joker] .corner {
+            font-size: x-small;
+            top: 5%;
+            left: 7.5%;
+            transform: scale(0.85);
+        }
 
-            font-size: 125%;
+        .corner {
+            font-size: x-small;
+
+            width: 20%;
+
+            &:nth-child(2) {
+                display: none;
+            }
+        }
+
+        .figure-container {
+            display: none;
+        }
+
+        &>figure {
+            width: 100%;
+            transform: translate(25%, 45%);
         }
     }
 }
