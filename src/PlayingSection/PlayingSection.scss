@@ -1,0 +1,23 @@
+@use "../Page/Page.scss";
+
+#playing-section {
+    flex-grow: 1;
+
+    padding: 2rem;
+
+    &>section {
+        display: grid;
+        grid-template-columns: repeat(7, auto);
+        place-content: center;
+        gap: 1rem;
+    }
+}
+
+@media (width >=Page.$second-screen-width) {
+    #playing-section {
+
+        &>section {
+            place-content: end;
+        }
+    }
+}

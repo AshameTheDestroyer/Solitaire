@@ -1,6 +1,12 @@
 $first-screen-width: 800px;
 $second-screen-width: 520px;
 
+$card-element-width: 10vmin;
+$card-element-aspect-ratio: 2 / 3;
+$card-large-icon-width: 60%;
+$card-colours: colourful, colourless;
+$card-types: heart, diamond, club, spade;
+
 #page {
     $padding: 2rem;
 

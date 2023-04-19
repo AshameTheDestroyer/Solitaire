@@ -1,0 +1,26 @@
+#gameboard-header {
+    display: flex;
+    flex-direction: row;
+    place-content: space-between;
+    gap: 1rem;
+
+    padding: 2rem;
+
+    background-color: var(--background-darker-colour);
+
+    &>section {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        place-content: center;
+        place-items: center;
+        gap: inherit;
+
+        &:nth-child(1) {
+            place-self: start;
+        }
+
+        &:nth-child(2) {
+            place-self: end;
+        }
+    }
+}

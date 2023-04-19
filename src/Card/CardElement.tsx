@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import Card from "../Classes/Card";
 
 import "./CardElement.scss";
-import CardDigit from "../Classes/CardDigit";
 
 type CardElementProps = {
     card: Card
@@ -17,11 +16,8 @@ export default function CardElement({ card }: CardElementProps) {
             <div className="corner">{card.digit}</div>
             <div className="corner">{card.digit}</div>
 
-            {
-                !Number.isNaN(card.number) ?
-                    <NumericFigureDisplayer card={card} /> :
-                    <figure />
-            }
+            {!Number.isNaN(card.number) ?
+                <NumericFigureDisplayer card={card} /> : <figure />}
         </div>
     );
 }

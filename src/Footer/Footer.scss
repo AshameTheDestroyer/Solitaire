@@ -1,0 +1,9 @@
+#gameboard-footer {
+    display: flex;
+    place-content: space-between;
+    place-items: center;
+
+    padding: 1rem;
+
+    background-color: var(--background-darker-colour);
+}

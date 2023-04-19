@@ -1,14 +1,11 @@
 @use "../Page/Page.scss";
 
-$card-colours: colourful, colourless;
-$card-types: heart, diamond, club, spade;
 $non-numeric-digits: J, Q, K, Joker;
 $non-numeric-digit-icons: sword_2, crown_queen, crown_king, joker;
 
 .card-element {
     $pseudo-element-offset: 0.75rem;
     $hover-scale: 1.1;
-    $large-icon-width: 60%;
     --colourful-colour: var(--main-colour);
     --colourless-colour: var(--fore-colour);
     --colourful-filter: var(--main-colour-filter);
@@ -17,13 +14,12 @@ $non-numeric-digit-icons: sword_2, crown_queen, crown_king, joker;
 
     position: relative;
 
-    width: 15vmin;
-    aspect-ratio: 2 / 3;
+    width: Page.$card-element-width;
+    aspect-ratio: Page.$card-element-aspect-ratio;
 
     display: flex;
     place-content: center;
     place-items: center;
-    gap: 1rem;
 
     background-color: var(--background-darker-colour);
 
@@ -38,7 +34,7 @@ $non-numeric-digit-icons: sword_2, crown_queen, crown_king, joker;
 
     cursor: pointer;
 
-    @each $card-colour in $card-colours {
+    @each $card-colour in Page.$card-colours {
         &.#{$card-colour} {
             color: var(--#{$card-colour}-colour);
 
@@ -49,7 +45,7 @@ $non-numeric-digit-icons: sword_2, crown_queen, crown_king, joker;
         }
     }
 
-    @each $card-type in $card-types {
+    @each $card-type in Page.$card-types {
         &.#{$card-type} {
             --icon-url: url("../Icons/#{$card-type}.svg");
         }
@@ -100,10 +96,6 @@ $non-numeric-digit-icons: sword_2, crown_queen, crown_king, joker;
     &[data-digit=Joker] .corner {
         text-transform: uppercase;
 
-        width: 1ch;
-
-        line-break: anywhere;
-
         &::after {
             content: none;
         }
@@ -150,7 +142,7 @@ $non-numeric-digit-icons: sword_2, crown_queen, crown_king, joker;
         top: 50%;
         transform: translate(-50%, -50%);
 
-        height: 55%;
+        height: 50%;
         width: calc(75% / 3);
 
         display: flex;
@@ -183,7 +175,7 @@ $non-numeric-digit-icons: sword_2, crown_queen, crown_king, joker;
         }
 
         &.enlarged {
-            width: $large-icon-width;
+            width: Page.$card-large-icon-width;
 
             figure {
                 width: 100%;
@@ -208,7 +200,7 @@ $non-numeric-digit-icons: sword_2, crown_queen, crown_king, joker;
     &>figure {
         --icon-url: url("../Icons/joker.svg");
 
-        width: $large-icon-width;
+        width: Page.$card-large-icon-width;
         aspect-ratio: 1;
 
         background-image: var(--icon-url);
