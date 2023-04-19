@@ -214,8 +214,6 @@ $non-numeric-digit-icons: sword_2, crown_queen, crown_king, joker;
 
     .card-element {
 
-        background-color: red;
-
         @each $card-type in Page.$card-types {
             &.#{$card-type}>figure {
                 --icon-url: url("../Icons/#{$card-type}.svg");

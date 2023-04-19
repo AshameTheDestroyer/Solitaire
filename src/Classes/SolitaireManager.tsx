@@ -42,4 +42,12 @@ export default class SolitaireManager {
     private ShuffleDeck(): void {
         this.deck.sort(() => Math.random() - 0.5);
     }
+
+    private DistributeDeck(): void {
+        for (let i: number = 0; i < SolitaireManager.PLAYING_PILE_COUNT; i++) {
+            for (let j: number = i; j < SolitaireManager.PLAYING_PILE_COUNT; j++) {
+
+            }
+        }
+    }
 }
