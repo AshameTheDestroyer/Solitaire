@@ -75,8 +75,8 @@
                 @for $i from 1 through Page.$reserved-card-count {
 
                     &:nth-last-child(#{$i}) {
-                        animation-delay: calc(125ms + $delay * (Page.$reserved-card-count - $i));
                         animation-name: reserved-pile-card-element-animation-#{$i};
+                        animation-delay: calc(125ms + $delay * (Page.$reserved-card-count - $i));
 
                         @keyframes reserved-pile-card-element-animation-#{$i} {
 
