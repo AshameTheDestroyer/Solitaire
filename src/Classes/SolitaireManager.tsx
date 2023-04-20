@@ -16,8 +16,9 @@ export default class SolitaireManager {
     public playingPiles: Array<Array<Card>>;
     public reservedPiles: Array<Card>;
 
-    public static readonly FOUNDATION_PILE_COUNT = 4;
-    public static readonly PLAYING_PILE_COUNT = 7;
+    public static readonly FOUNDATION_PILE_COUNT: number = 4;
+    public static readonly PLAYING_PILE_COUNT: number = 7;
+    public static readonly CARD_DRAWING_COUNT: number = 3;
 
     private constructor() {
         this.deck = [...Deck].filter(card =>
@@ -55,10 +56,28 @@ export default class SolitaireManager {
         for (let i: number = 0; i < SolitaireManager.PLAYING_PILE_COUNT; i++) {
             for (let j: number = i; j < SolitaireManager.PLAYING_PILE_COUNT; j++) {
                 let card: Card | undefined = this.deck.pop();
-                if (card == undefined) { continue; }
+                if (card == undefined) { break; }
 
                 this.playingPiles[j]?.push(card);
             }
+        }
+    }
+
+    public DrawCards(): void {
+        if (!this.deck.length) {
+            this.deck.push(...this.reservedPiles.reverse());
+
+            this.reservedPiles =
+                this.reservedPiles.filter(() => false);
+
+            return;
+        }
+
+        for (let i: number = 0; i < SolitaireManager.CARD_DRAWING_COUNT; i++) {
+            let card: Card | undefined = this.deck.pop();
+            if (card == undefined) { break; }
+
+            this.reservedPiles.push(card);
         }
     }
 }

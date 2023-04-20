@@ -16,6 +16,7 @@ export default function DeckDisplayer() {
         setGroupingPredicate(
             (value: React.SetStateAction<((card: Card) => any) | undefined>) =>
                 (card: Card): any => card.type);
+        console.log(GroupingPredicate);
     }, []);
 
     return (
@@ -70,7 +71,7 @@ function Header({
 }
 
 type GroupDisplayerProps = {
-    GroupingPredicate?: (card: Card) => any;
+    GroupingPredicate: (card: Card) => any;
 };
 
 function GroupDisplayer({

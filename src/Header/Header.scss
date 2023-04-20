@@ -1,3 +1,5 @@
+@use "../Page/Page.scss";
+
 #gameboard-header {
     display: flex;
     flex-direction: row;
@@ -24,6 +26,7 @@
         }
 
         &>.card-placeholder-element {
+            $delay: 350ms;
             opacity: 0;
 
             animation-name: card-placeholder-element-animation;
@@ -41,6 +44,73 @@
 
                 to {
                     opacity: 1;
+                }
+            }
+
+            &:nth-child(1) .card-element {
+                opacity: 0;
+
+                animation-name: deck-card-element-animation;
+                animation-timing-function: cubic-bezier(1, 1, 1, 1);
+                animation-duration: calc($delay * 2);
+
+                @keyframes deck-card-element-animation {
+
+                    from {
+                        opacity: 0;
+                    }
+
+                    to {
+                        opacity: 1;
+                    }
+                }
+            }
+
+
+            &:nth-child(2) .card-element {
+                --density: 30%;
+
+                left: calc(var(--border-thickness) * -0.5 - 100% - 2rem);
+
+                @for $i from 1 through Page.$reserved-card-count {
+
+                    &:nth-last-child(#{$i}) {
+                        animation-delay: calc(125ms + $delay * (Page.$reserved-card-count - $i));
+                    }
+
+                    &:nth-last-child(#{$i}) {
+                        animation-name: reserved-pile-card-element-animation-#{$i};
+
+                        @keyframes reserved-pile-card-element-animation-#{$i} {
+
+                            to {
+                                left: calc(var(--border-thickness) * -1 + (Page.$reserved-card-count - $i) * var(--density));
+                            }
+                        }
+                    }
+                }
+
+                @for $i from 1 through Page.$card-count {
+
+                    &:nth-last-child(#{calc($i + Page.$reserved-card-count)}) {
+                        $mod-i: (Page.$reserved-card-count - $i) % Page.$reserved-card-count;
+                        left: calc(var(--border-thickness) * -1 + ($mod-i) * var(--density));
+                    }
+                }
+            }
+
+            .card-element {
+                animation-duration: $delay;
+                animation-timing-function: var(--best-bezier-curve);
+                animation-iteration-count: 1;
+                animation-direction: normal;
+                animation-fill-mode: forwards;
+
+                @for $i from 1 through Page.$card-count {
+
+                    &:nth-child(#{$i}) {
+                        animation-delay: calc(20ms * ($i - 1));
+                    }
                 }
             }
         }

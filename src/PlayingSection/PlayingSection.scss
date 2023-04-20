@@ -12,7 +12,7 @@
         gap: 1rem;
 
         .card-placeholder-element {
-            $delay: 250ms;
+            $delay: 350ms;
 
             opacity: 0;
 
@@ -45,7 +45,7 @@
                 top: calc(var(--border-thickness) * -1);
 
                 animation-duration: $delay;
-                animation-timing-function: cubic-bezier(1, 1, 1, 1);
+                animation-timing-function: var(--best-bezier-curve);
                 animation-iteration-count: 1;
                 animation-direction: normal;
                 animation-fill-mode: forwards;
@@ -53,7 +53,7 @@
                 @for $i from 1 through calc(Page.$playing-pile-count + 1) {
 
                     &:nth-child(#{$i}) {
-                        animation-delay: calc($delay * (Page.$playing-pile-count + 1) + $delay * (Page.$playing-pile-count - $i + 1));
+                        animation-delay: calc($delay * (Page.$playing-pile-count + $i - 2));
                     }
 
                     &:nth-child(#{calc($i + 1)}) {
@@ -73,6 +73,7 @@
 }
 
 @media (width >=Page.$second-screen-width) {
+
     #playing-section {
 
         &>section {

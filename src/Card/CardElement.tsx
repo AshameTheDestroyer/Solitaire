@@ -8,24 +8,51 @@ type CardElementProps = {
     card: Card;
     isFlipped?: boolean;
     isFlippable?: boolean;
+    isSelected?: boolean;
+    isSelectable?: boolean;
+    isClickable?: boolean;
+    onClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 };
 
 export default function CardElement({
     card,
     isFlipped = false,
     isFlippable = true,
+    isSelected = false,
+    isSelectable = true,
+    isClickable = true,
+    onClick,
 }: CardElementProps) {
+    function CardElementClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>): void {
+        if (!isClickable) { return; }
+
+        onClick?.(e);
+
+        document.querySelectorAll(".card-element.selected")
+            .forEach(cardElement =>
+                cardElement != e.currentTarget &&
+                cardElement.classList.remove("selected"));
+
+        if (isFlippable) {
+            e.currentTarget.classList.toggle("flipped");
+        }
+
+        if (isSelectable) {
+            e.currentTarget.classList.toggle("selected");
+        }
+    }
+
     return (
         <div className={
             `card-element ` +
             `${card.colour.toLowerCase()} ` +
             `${card.type.toLowerCase()} ` +
-            `${isFlipped ? "flipped" : ""}`}
+            `${isFlipped ? "flipped" : ""} ` +
+            `${isSelected ? "selected" : ""} ` +
+            `${isClickable ? "clickable" : ""}`}
 
             data-digit={card.digit}
-            onClick={e =>
-                isFlippable
-                && e.currentTarget.classList.toggle("flipped")}>
+            onClick={CardElementClick}>
             <div className="corner">{card.digit}</div>
             <div className="corner">{card.digit}</div>
 

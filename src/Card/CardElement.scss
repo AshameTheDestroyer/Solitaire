@@ -4,8 +4,8 @@ $non-numeric-digits: J, Q, K, Joker;
 $non-numeric-digit-icons: sword_2, crown_queen, crown_king, joker;
 
 .card-element {
-    $pseudo-element-offset: 0.5rem;
     $hover-scale: 1.1;
+    --pseudo-element-offset: 0.5rem;
     --colourful-colour: var(--main-colour);
     --colourless-colour: var(--fore-colour);
     --colourful-filter: var(--main-colour-filter);
@@ -32,8 +32,6 @@ $non-numeric-digit-icons: sword_2, crown_queen, crown_king, joker;
 
     overflow: hidden;
 
-    cursor: pointer;
-
     z-index: 1;
 
     @each $card-colour in Page.$card-colours {
@@ -42,7 +40,8 @@ $non-numeric-digit-icons: sword_2, crown_queen, crown_king, joker;
             color: var(--#{$card-colour}-colour);
 
             .corner::after,
-            figure {
+            .figure-container figure,
+            &>figure::after {
                 filter: var(--#{$card-colour}-filter);
             }
         }
@@ -60,6 +59,10 @@ $non-numeric-digit-icons: sword_2, crown_queen, crown_king, joker;
         &[data-digit=#{nth($list: $non-numeric-digits, $n: $i)}]>figure {
             --icon-url: url("../Icons/#{nth($list: $non-numeric-digit-icons, $n: $i)}.svg") !important;
         }
+    }
+
+    @mixin on-hover-or-select {
+        filter: brightness(150%);
     }
 
     &::after {
@@ -80,8 +83,14 @@ $non-numeric-digit-icons: sword_2, crown_queen, crown_king, joker;
         transition: transform 500ms, opacity 500ms;
     }
 
-    &:hover {
-        transform: scale($hover-scale);
+    &.clickable {
+        cursor: pointer;
+
+        &:is(:hover, .selected) {
+            @include on-hover-or-select();
+
+            transform: scale($hover-scale);
+        }
     }
 
     &.flipped {
@@ -93,7 +102,9 @@ $non-numeric-digit-icons: sword_2, crown_queen, crown_king, joker;
             opacity: 1;
         }
 
-        &:hover {
+        &.clickable:is(:hover, .selected) {
+            @include on-hover-or-select();
+
             transform: rotateY(180deg) scale($hover-scale);
         }
     }
@@ -107,20 +118,20 @@ $non-numeric-digit-icons: sword_2, crown_queen, crown_king, joker;
 
         position: absolute;
 
-        width: calc(100% - $pseudo-element-offset * 2);
+        width: calc(100% - var(--pseudo-element-offset) * 2);
 
         &:nth-child(1) {
-            top: $pseudo-element-offset;
-            left: $pseudo-element-offset;
+            top: var(--pseudo-element-offset);
+            left: var(--pseudo-element-offset);
         }
 
         &:nth-child(2) {
-            bottom: $pseudo-element-offset;
-            right: $pseudo-element-offset;
+            bottom: var(--pseudo-element-offset);
+            right: var(--pseudo-element-offset);
             transform: rotate(180deg);
         }
 
-        &:first-child::after {
+        &::after {
             content: "";
 
             position: absolute;
@@ -169,11 +180,11 @@ $non-numeric-digit-icons: sword_2, crown_queen, crown_king, joker;
         }
 
         &.shortened-for-7 {
-            height: 35%;
+            height: 30%;
         }
 
         &.shortened-for-10 {
-            height: 47.5%;
+            height: 35%;
         }
 
         &.enlarged {
@@ -200,23 +211,34 @@ $non-numeric-digit-icons: sword_2, crown_queen, crown_king, joker;
     }
 
     &>figure {
+        position: relative;
+
         --icon-url: url("");
 
         width: Page.$card-large-icon-width;
         aspect-ratio: 1;
 
-        background-image: var(--icon-url);
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: 100%;
+        &::after {
+            content: "";
+
+            position: absolute;
+            inset: 0;
+
+            background-image: var(--icon-url);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 100%;
+        }
     }
 }
 
-@media (width <=Page.$second-screen-width) or (orientation: portrait) {
+@media (width <=Page.$second-screen-width) {
 
     .card-element {
+        --pseudo-element-offset: 0.2rem;
 
         @each $card-type in Page.$card-types {
+
             &.#{$card-type}>figure {
                 --icon-url: url("../Icons/#{$card-type}.svg");
             }
@@ -227,14 +249,14 @@ $non-numeric-digit-icons: sword_2, crown_queen, crown_king, joker;
             top: 5%;
             left: 7.5%;
             transform: scale(0.85);
-        }
-
-        .corner {
-            font-size: x-small;
 
             &:nth-child(2) {
                 display: none;
             }
+        }
+
+        .corner {
+            font-size: x-small;
         }
 
         .figure-container {
@@ -244,6 +266,8 @@ $non-numeric-digit-icons: sword_2, crown_queen, crown_king, joker;
         &>figure {
             width: 100%;
             transform: translate(25%, 45%);
+
+            background-color: inherit;
         }
     }
 }
