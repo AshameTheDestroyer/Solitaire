@@ -76,9 +76,6 @@
 
                     &:nth-last-child(#{$i}) {
                         animation-delay: calc(125ms + $delay * (Page.$reserved-card-count - $i));
-                    }
-
-                    &:nth-last-child(#{$i}) {
                         animation-name: reserved-pile-card-element-animation-#{$i};
 
                         @keyframes reserved-pile-card-element-animation-#{$i} {
