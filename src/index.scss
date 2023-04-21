@@ -37,11 +37,13 @@ body {
 
     &::before {
         content: "";
+
         position: fixed;
         inset: 0;
 
         background: linear-gradient(45deg, transparent 34%, #C4C4C4C7 35%, #C4C4C4C7 40%, transparent 41%, transparent 59%, #C4C4C4C7 60%, #C4C4C4C7 65%, transparent 66%), linear-gradient(135deg, transparent 34%, #C4C4C4C7 35%, #C4C4C4C7 40%, transparent 41%, transparent 59%, #C4C4C4C7 60%, #C4C4C4C7 65%, transparent 66%);
         background-size: 3em 3em;
+
         opacity: 0.25;
     }
 
