@@ -7,7 +7,7 @@ import CardDigit from "../Classes/CardDigit";
 import "../Classes/GroupByImplementaion";
 
 import "./DeckDisplayer.scss";
-import LinkButton from "../LinkButton/LinkButton";
+import CustomButton from "../CustomButton/CustomButton";
 
 export default function DeckDisplayer() {
     const [GroupingPredicate, setGroupingPredicate] = useState<(card: Card) => any>();
@@ -16,7 +16,6 @@ export default function DeckDisplayer() {
         setGroupingPredicate(
             (value: React.SetStateAction<((card: Card) => any) | undefined>) =>
                 (card: Card): any => card.type);
-        console.log(GroupingPredicate);
     }, []);
 
     return (
@@ -53,7 +52,7 @@ function Header({
         <header>
             <section>
                 <h1>Card Deck</h1>
-                <LinkButton text="Home" href="/" />
+                <CustomButton text="Home" href="/" />
             </section>
 
             <nav> {

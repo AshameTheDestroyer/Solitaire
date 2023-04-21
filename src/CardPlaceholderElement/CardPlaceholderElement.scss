@@ -43,10 +43,76 @@
     }
 
     &.clickable {
+        overflow: hidden;
+
         cursor: pointer;
+
+        background-color: var(--fore-darker-colour);
+        border-color: var(--fore-colour);
+
+        &::before {
+            height: 15%;
+
+            animation: card-placeholder-element-before-animation;
+
+            @keyframes card-placeholder-element-before-animation {
+
+                0%,
+                2.5% {
+                    transform: translate(-125%, -125%) rotate(-45deg);
+                }
+
+                22.5%,
+                100% {
+                    transform: translate(25%, 25%) rotate(-45deg);
+                }
+            }
+        }
+
+        &::after {
+            height: 10%;
+
+            animation: card-placeholder-element-after-animation;
+
+            @keyframes card-placeholder-element-after-animation {
+
+                0% {
+                    transform: translate(-125%, -125%) rotate(-45deg);
+                }
+
+                20%,
+                100% {
+                    transform: translate(25%, 25%) rotate(-45deg);
+                }
+            }
+        }
+
+        &::before,
+        &::after {
+            content: "";
+
+            position: absolute;
+            top: 50%;
+            left: 50%;
+
+            width: 300%;
+
+            background-color: var(--fore-colour);
+
+            opacity: 0.85;
+
+            animation-duration: 7500ms;
+            animation-timing-function: cubic-bezier(1, 1, 1, 1);
+            animation-direction: normal;
+            animation-iteration-count: infinite;
+        }
 
         &:hover>figure {
             transform: translate(-50%, -50%) scale(1.2);
+        }
+
+        &>figure {
+            opacity: 1;
         }
     }
 

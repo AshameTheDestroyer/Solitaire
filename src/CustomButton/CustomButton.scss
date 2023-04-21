@@ -1,10 +1,11 @@
-.link-button {
+.custom-button {
     $padding: 2rem;
     --character-count: 0;
 
     position: relative;
 
     min-width: calc(var(--character-count) * 1ch + $padding * 2);
+    min-height: 3.2rem;
 
     padding: $padding;
 
@@ -15,5 +16,7 @@
         display: flex;
         place-content: center;
         place-items: center;
+
+        pointer-events: none;
     }
 }

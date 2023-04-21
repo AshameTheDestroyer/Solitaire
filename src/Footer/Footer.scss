@@ -6,4 +6,10 @@
     padding: 1.5rem;
 
     background-color: var(--background-darker-colour);
+
+    section {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
 }

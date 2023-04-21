@@ -1,16 +1,7 @@
 import Card, { Deck } from "./Card";
+import CardType from "./CardType";
 
 export default class SolitaireManager {
-    private static instance: SolitaireManager;
-
-    public static get Instance(): SolitaireManager {
-        if (!SolitaireManager.instance) {
-            SolitaireManager.instance = new SolitaireManager();
-        }
-
-        return SolitaireManager.instance;
-    }
-
     public deck: Array<Card>;
     public foundationPiles: Array<Array<Card>>;
     public playingPiles: Array<Array<Card>>;
@@ -20,7 +11,18 @@ export default class SolitaireManager {
     public static readonly PLAYING_PILE_COUNT: number = 7;
     public static readonly CARD_DRAWING_COUNT: number = 3;
 
-    private constructor() {
+    public constructor() {
+        this.Reset();
+    }
+
+    public Start(): void {
+        this.Reset();
+
+        this.ShuffleDeck();
+        this.DistributeDeck();
+    }
+
+    public Reset(): void {
         this.deck = [...Deck].filter(card =>
             !card.type.toString().includes("Joker"));
 
@@ -35,17 +37,6 @@ export default class SolitaireManager {
             .map(_ => new Array<Card>());
 
         this.reservedPiles = new Array<Card>();
-    }
-
-    public static Start(): void {
-        this.Reset();
-
-        this.Instance.ShuffleDeck();
-        this.Instance.DistributeDeck();
-    }
-
-    public static Reset(): void {
-        SolitaireManager.instance = new SolitaireManager();
     }
 
     private ShuffleDeck(): void {
@@ -63,8 +54,11 @@ export default class SolitaireManager {
         }
     }
 
-    public DrawCards(): void {
+    public DrawFromDeck(count: number = SolitaireManager.CARD_DRAWING_COUNT,
+        isUnshifting = false): void {
         if (!this.deck.length) {
+            if (!this.reservedPiles.length) { return; }
+
             this.deck.push(...this.reservedPiles.reverse());
 
             this.reservedPiles =
@@ -73,11 +67,65 @@ export default class SolitaireManager {
             return;
         }
 
-        for (let i: number = 0; i < SolitaireManager.CARD_DRAWING_COUNT; i++) {
+        for (let i: number = 0; i < count; i++) {
             let card: Card | undefined = this.deck.pop();
             if (card == undefined) { break; }
 
-            this.reservedPiles.push(card);
+            if (!isUnshifting) {
+                this.reservedPiles.push(card);
+
+                continue;
+            }
+
+            this.reservedPiles.unshift(card);
         }
+    }
+
+    public DrawFromReservedPile(playingPileIndex: number): void {
+        let card: Card | undefined = this.reservedPiles.pop();
+        if (card == undefined) { return; }
+
+        this.playingPiles[playingPileIndex].push(card);
+
+        if (this.reservedPiles.length < SolitaireManager.CARD_DRAWING_COUNT) {
+            this.DrawFromDeck(1, true);
+        }
+    }
+
+    public MoveFromFoundationPile(foundationPileIndex: number, playingPileIndex: number): void {
+        let card: Card | undefined = this.foundationPiles[foundationPileIndex].pop();
+        if (card == undefined) { return; }
+
+        this.playingPiles[playingPileIndex].push(card);
+    }
+
+    public MoveFromPlayingPile(firstIndex: number, secondIndex: number, cardIndex: number): void {
+        if (firstIndex == secondIndex) { return; }
+
+        this.playingPiles[secondIndex].push(
+            ...this.playingPiles[firstIndex].slice(cardIndex));
+
+        this.playingPiles[firstIndex] =
+            this.playingPiles[firstIndex].filter((_, i) => i < cardIndex);
+    }
+
+    public ClaimFromReservedPile(): void {
+        let card: Card | undefined = this.reservedPiles.pop();
+        if (card == undefined) { return; }
+
+        let foundationPileIndex: number = Object.values(CardType).indexOf(card.type);
+        this.foundationPiles[foundationPileIndex].push(card);
+
+        if (this.reservedPiles.length < SolitaireManager.CARD_DRAWING_COUNT) {
+            this.DrawFromDeck(1, true);
+        }
+    }
+
+    public ClaimFromPlayingPile(playingPileIndex: number) {
+        let card: Card | undefined = this.playingPiles[playingPileIndex].pop();
+        if (card == undefined) { return; }
+
+        let foundationPileIndex: number = Object.values(CardType).indexOf(card.type);
+        this.foundationPiles[foundationPileIndex].push(card);
     }
 }

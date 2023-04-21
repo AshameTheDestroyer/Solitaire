@@ -1,6 +1,8 @@
 @use "../Page/Page.scss";
 
 #playing-section {
+    --delay: 0ms;
+
     flex-grow: 1;
 
     padding: 2rem;
@@ -11,13 +13,11 @@
         place-content: center;
         gap: 1rem;
 
-        .card-placeholder-element {
-            $delay: 350ms;
-
+        .card-placeholder-element.animateable {
             opacity: 0;
 
             animation-name: card-placeholder-element-animation;
-            animation-duration: $delay;
+            animation-duration: var(--delay);
             animation-timing-function: cubic-bezier(1, 1, 1, 1);
             animation-iteration-count: 1;
             animation-direction: normal;
@@ -26,7 +26,7 @@
             @for $i from 1 through Page.$playing-pile-count {
 
                 &:nth-child(#{$i}) {
-                    animation-delay: calc($delay * $i);
+                    animation-delay: calc(var(--delay) * $i);
                 }
             }
 
@@ -44,7 +44,7 @@
             .card-element {
                 top: calc(var(--border-thickness) * -1);
 
-                animation-duration: $delay;
+                animation-duration: var(--delay);
                 animation-timing-function: var(--best-bezier-curve);
                 animation-iteration-count: 1;
                 animation-direction: normal;
@@ -53,7 +53,7 @@
                 @for $i from 1 through calc(Page.$playing-pile-count + 1) {
 
                     &:nth-child(#{$i}) {
-                        animation-delay: calc($delay * (Page.$playing-pile-count + $i - 2));
+                        animation-delay: calc(var(--delay) * (Page.$playing-pile-count + $i - 2));
                     }
 
                     &:nth-child(#{calc($i + 1)}) {

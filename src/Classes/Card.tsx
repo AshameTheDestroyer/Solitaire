@@ -7,29 +7,47 @@ type CardConstructorProps = {
     type: CardType,
 };
 
+type ComparisonResultType = -1 | 0 | 1 | null;
+
 export default class Card {
     public digit: CardDigit;
     public type: CardType;
     public colour: CardColour;
 
     constructor(props: CardConstructorProps) {
-        if ([CardType.ColourfulJoker, CardType.ColourlessJoker].includes(props.type) &&
-            props.digit != CardDigit.Joker) {
-            throw new Error("Joker types cannot have a digit that is not Joker.");
-        }
-
-        if (![CardType.ColourfulJoker, CardType.ColourlessJoker].includes(props.type) &&
-            props.digit == CardDigit.Joker) {
-            throw new Error("Non-Joker types cannot have a digit that is Joker.");
-        }
-
         this.digit = props.digit;
         this.type = props.type;
         this.colour = GetCardColour(this.type);
+
+        if (this.isJoker && props.digit != CardDigit.Joker) {
+            throw new Error("Joker types cannot have a digit that is not Joker.");
+        }
+
+        if (!this.isJoker && props.digit == CardDigit.Joker) {
+            throw new Error("Non-Joker types cannot have a digit that is Joker.");
+        }
     }
 
-    public get number() {
+    public get number(): number {
         return this.digit == CardDigit.Ace ? 1 : Number.parseInt(this.digit);
+    }
+
+    public get isJoker(): boolean {
+        return [CardType.ColourfulJoker, CardType.ColourlessJoker].includes(this.type);
+    }
+
+    public Compare(other: Card): ComparisonResultType {
+        let difference = this.Difference(other);
+        return difference > 0 ? +1 : difference < 0 ? -1 : difference == 0 ? 0 : null;
+    }
+
+    public Difference(other: Card): number | null {
+        if (this.isJoker || other.isJoker) { return null; }
+
+        const VALUE: number = Object.values(CardDigit).indexOf(this.digit),
+            OTHER_VALUE: number = Object.values(CardDigit).indexOf(other.digit);
+
+        return VALUE - OTHER_VALUE;
     }
 }
 

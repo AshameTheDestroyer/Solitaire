@@ -3,9 +3,11 @@ import React, { useState, useEffect } from "react";
 import Card from "../Classes/Card";
 
 import "./CardElement.scss";
+import { PlaceholderType } from "../CardPlaceholderElement/CardPlaceholderElement";
 
 type CardElementProps = {
     card: Card;
+    placeholderType?: PlaceholderType;
     isFlipped?: boolean;
     isFlippable?: boolean;
     isSelected?: boolean;
@@ -63,9 +65,13 @@ export default function CardElement({
     );
 }
 
+type NumericFigureDisplayerProps = {
+    card: Card;
+};
+
 function NumericFigureDisplayer({
     card
-}: CardElementProps) {
+}: NumericFigureDisplayerProps) {
     return (
         <> {
             Array(3).fill(null).map((_, i) => {
