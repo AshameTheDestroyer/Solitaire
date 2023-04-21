@@ -16,3 +16,6 @@ The full design of the gameboard is now complete, I may have to tweak things lat
 
 ### v5. Card Animations
 Added few animations to the cards being placed down one by one, and the deck when cards being drawn from, and they look neat!
+
+### v6. Actual Gameplay
+Now the game's finally playable, hurray! and I'm sick of the project already.
