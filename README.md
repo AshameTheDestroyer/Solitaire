@@ -19,3 +19,6 @@ Added few animations to the cards being placed down one by one, and the deck whe
 
 ### v6. Actual Gameplay
 Now the game's finally playable, hurray! and I'm sick of the project already.
+
+### v7. Finalization
+I added light/dark theming, page reloading reassurance whilst playing, and a sick pattern for the background.
