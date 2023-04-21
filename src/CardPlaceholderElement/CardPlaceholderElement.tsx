@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
+import React, { useState, useEffect, useRef } from "react";
+
+import Card from "../Classes/Card";
+import CardType from "../Classes/CardType";
+import CardElement from "../Card/CardElement";
 
 import "./CardPlaceholderElement.scss";
-import CardType from "../Classes/CardType";
-import Card, { Deck } from "../Classes/Card";
-import CardElement from "../Card/CardElement";
 
 export type PlaceholderType = "deck" | "reservedPile" | "foundationPile" | "playingPile";
 

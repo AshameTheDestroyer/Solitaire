@@ -1,5 +1,5 @@
-import Card, { Deck } from "./Card";
 import CardType from "./CardType";
+import Card, { Deck } from "./Card";
 
 export default class SolitaireManager {
     public deck: Array<Card>;

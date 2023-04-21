@@ -1,6 +1,6 @@
-import CardColour, { GetCardColour } from "./CardColour";
-import CardDigit from "./CardDigit";
 import CardType from "./CardType";
+import CardDigit from "./CardDigit";
+import CardColour, { GetCardColour } from "./CardColour";
 
 type CardConstructorProps = {
     digit: CardDigit,

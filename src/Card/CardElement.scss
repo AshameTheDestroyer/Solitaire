@@ -232,6 +232,12 @@ $non-numeric-digit-icons: sword_2, crown_queen, crown_king, joker;
     }
 }
 
+.light-themed .card-element {
+    --colourless-filter: invert(1);
+
+    background-color: var(--background-colour);
+}
+
 @media (width <=Page.$second-screen-width) {
 
     .card-element {

@@ -9,7 +9,7 @@ interface Array<T> {
 Array.prototype.groupBy = function <U>(predicate: (element: any) => U) {
     let groups: Map<U, Array<any>> = new Map();
 
-    this.forEach(element => {
+    this.forEach((element: any): void => {
         let group: U = predicate(element);
 
         if (!groups.has(group)) {

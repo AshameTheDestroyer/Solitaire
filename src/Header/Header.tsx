@@ -1,14 +1,15 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
+import React, { useEffect, useRef, useContext } from "react";
 
-import CardPlaceholderElement from "../CardPlaceholderElement/CardPlaceholderElement";
+import { Deck } from "../Classes/Card";
 import CardType from "../Classes/CardType";
 import CardDigit from "../Classes/CardDigit";
 import { GameboardContext } from "../Gameboard/Gameboard";
+import CardPlaceholderElement from "../CardPlaceholderElement/CardPlaceholderElement";
 
 import "./Header.scss";
-import { Deck } from "../Classes/Card";
 
-const SMALL_DENSITY_PERCENTAGE: number = 0.5;
+const SMALL_DENSITY_PERCENTAGE: number = 0.5,
+    MINIMUM_WINNING_TIMEOUT: number = 1000;
 
 export default function Header() {
     const state = useContext(GameboardContext);
@@ -45,7 +46,9 @@ export default function Header() {
         if (state.solitaireManager.foundationPiles.some(foundationPile =>
             foundationPile.length < CARD_COUNT)) { return; }
 
-        alert("Congratulations! You actually managed to won!");
+        setTimeout(() => {
+            alert("Congratulations! You actually managed to won!");
+        }, MINIMUM_WINNING_TIMEOUT);
     }
 
     return (

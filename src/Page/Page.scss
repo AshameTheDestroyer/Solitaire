@@ -1,3 +1,4 @@
+@use "../index.scss";
 $first-screen-width: 800px;
 $second-screen-width: 520px;
 
@@ -26,5 +27,9 @@ $reserved-card-count: 3;
         display: grid;
         grid-template-columns: repeat(1, 1fr);
         gap: 1rem;
+    }
+
+    .custom-button {
+        background-color: var(--background-colour);
     }
 }

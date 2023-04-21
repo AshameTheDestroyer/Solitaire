@@ -34,6 +34,20 @@ body {
 
     color: var(--fore-colour);
     background-color: var(--background-colour);
+
+    &::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+
+        background: linear-gradient(45deg, transparent 34%, #C4C4C4C7 35%, #C4C4C4C7 40%, transparent 41%, transparent 59%, #C4C4C4C7 60%, #C4C4C4C7 65%, transparent 66%), linear-gradient(135deg, transparent 34%, #C4C4C4C7 35%, #C4C4C4C7 40%, transparent 41%, transparent 59%, #C4C4C4C7 60%, #C4C4C4C7 65%, transparent 66%);
+        background-size: 3em 3em;
+        opacity: 0.25;
+    }
+
+    &.light-themed::before {
+        opacity: 0.75;
+    }
 }
 
 input,
@@ -94,11 +108,11 @@ ul {
 }
 
 ::-webkit-scrollbar-track {
-    background-color: var(--half-transparent);
+    background-color: var(--background-darker-colour);
 }
 
 *:not(body)::-webkit-scrollbar-track {
-    outline: 0.3rem solid var(--half-transparent);
+    background-color: var(--background-darker-colour);
     border-radius: 100rem;
 }
 
@@ -107,6 +121,10 @@ ul {
 
     border: 0.2rem solid var(--half-transparent);
     border-radius: 100vh;
+}
+
+.light-themed ::-webkit-scrollbar-thumb {
+    background-color: #f00;
 }
 
 @mixin break($direction, $thickness: 0.1rem, $padding: 2rem, $colour: var(--fore-colour)) {

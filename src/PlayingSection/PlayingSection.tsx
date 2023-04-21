@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
 
-import CardPlaceholderElement from "../CardPlaceholderElement/CardPlaceholderElement";
-import { GameboardContext } from "../Gameboard/Gameboard";
 import CardDigit from "../Classes/CardDigit";
+import { GameboardContext } from "../Gameboard/Gameboard";
 import SolitaireManager from "../Classes/SolitaireManager";
+import CardPlaceholderElement from "../CardPlaceholderElement/CardPlaceholderElement";
 
 import "./PlayingSection.scss";
 

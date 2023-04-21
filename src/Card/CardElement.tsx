@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import Card from "../Classes/Card";
+import { PlaceholderType } from "../CardPlaceholderElement/CardPlaceholderElement";
 
 import "./CardElement.scss";
-import { PlaceholderType } from "../CardPlaceholderElement/CardPlaceholderElement";
 
 type CardElementProps = {
     card: Card;

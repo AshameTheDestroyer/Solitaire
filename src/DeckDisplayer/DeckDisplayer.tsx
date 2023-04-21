@@ -1,13 +1,13 @@
 import React, { useState, useEffect, } from "react";
 
-import Card, { Deck } from "../Classes/Card";
-import CardElement from "../Card/CardElement";
+import "../Classes/GroupByImplementaion";
 import CardType from "../Classes/CardType";
 import CardDigit from "../Classes/CardDigit";
-import "../Classes/GroupByImplementaion";
+import Card, { Deck } from "../Classes/Card";
+import CardElement from "../Card/CardElement";
+import CustomButton from "../CustomButton/CustomButton";
 
 import "./DeckDisplayer.scss";
-import CustomButton from "../CustomButton/CustomButton";
 
 export default function DeckDisplayer() {
     const [GroupingPredicate, setGroupingPredicate] = useState<(card: Card) => any>();

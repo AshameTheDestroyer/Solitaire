@@ -1,15 +1,23 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useContext } from "react";
 
-import "./Page.scss";
+import { MainContext } from "../main";
 import CustomButton from "../CustomButton/CustomButton";
 
+import "./Page.scss";
+
 export default function Page() {
+    const state = useContext(MainContext);
+
     return (
         <main id="page">
             <section>
-                <CustomButton href="./Gameboard" text="Play" />
-                <CustomButton href="./DeckDisplayer" text="Deck Displayer" />
+                <CustomButton text="Play" href="./Gameboard" />
+                <CustomButton text="Deck Displayer" href="./DeckDisplayer" />
+
+                <CustomButton
+                    text={`Toggle to ${state.isDarkThemed ? "Light Theme" : "Dark Theme"}`}
+                    isStatic
+                    onClick={e => state.ToggleDarkTheme()} />
             </section>
         </main>
     );

@@ -1,12 +1,12 @@
-import React, { useState, useEffect, createContext } from "react";
+import { useState, useEffect, createContext } from "react";
 
-import Header from "../Header/Header";
-import PlayingSection from "../PlayingSection/PlayingSection";
-import Footer from "../Footer/Footer";
-import SolitaireManager from "../Classes/SolitaireManager";
-import { PlacedCard, PlaceholderType } from "../CardPlaceholderElement/CardPlaceholderElement";
 import Card from "../Classes/Card";
+import Footer from "../Footer/Footer";
+import Header from "../Header/Header";
 import CardDigit from "../Classes/CardDigit";
+import SolitaireManager from "../Classes/SolitaireManager";
+import PlayingSection from "../PlayingSection/PlayingSection";
+import { PlacedCard, PlaceholderType } from "../CardPlaceholderElement/CardPlaceholderElement";
 
 import "./Gameboard.scss";
 
@@ -221,3 +221,11 @@ export default function Gameboard() {
         </GameboardContext.Provider>
     );
 }
+
+window.addEventListener("beforeunload", e => {
+    const GAMEBOARD = document.querySelector("#gameboard");
+    if (GAMEBOARD == null) { return; }
+
+    e.preventDefault();
+    return (e.returnValue = "Are you sure you want to leave the page?");
+}, { capture: true });
