@@ -238,7 +238,7 @@ $non-numeric-digit-icons: sword_2, crown_queen, crown_king, joker;
     background-color: var(--background-colour);
 }
 
-@media (width <=Page.$second-screen-width) {
+@media (width <=Page.$second-screen-width) or (orientation: portrait) {
 
     .card-element {
         --pseudo-element-offset: 0.2rem;
