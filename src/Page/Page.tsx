@@ -44,6 +44,7 @@ function BigFigure() {
             Object.values(CardType)
                 .filter(cardType =>
                     !cardType.toString().includes("Joker"))
+                .sort(() => Math.random() - 0.5)
                 .map(cardType =>
                     <div className="card-container" key={cardType}>
                         <CardElement
