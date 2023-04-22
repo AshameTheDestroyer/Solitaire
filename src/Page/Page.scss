@@ -12,7 +12,7 @@ $playing-pile-count: 7;
 $reserved-card-count: 3;
 
 #page {
-    $padding: 3.5rem;
+    $padding: 3rem;
 
     min-height: calc(100vh - $padding * 2);
     min-height: calc(100dvh - $padding * 2);
