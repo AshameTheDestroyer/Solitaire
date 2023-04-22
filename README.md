@@ -22,3 +22,6 @@ Now the game's finally playable, hurray! and I'm sick of the project already.
 
 ### v7. Finalization
 I added light/dark theming, page reloading reassurance whilst playing, and a sick pattern for the background.
+
+### v8. Landing Page
+Nothing's fancy, OK JK, maybe only the landing page that I added to the website, and fixed some minor issues too.
