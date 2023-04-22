@@ -32,11 +32,11 @@ export default function Gameboard() {
     const [state, setState] = useState<GameboardStateProps>({
         solitaireManager: new SolitaireManager(),
         selectedCard: null,
-        Reset: Reset,
-        DrawFromDeck: DrawFromDeck,
-        SelectCard: SelectCard,
-        DeselectCard: DeselectCard,
-        MoveCardToEmptyPlaceholderCardElement: MoveCardToEmptyPlaceholderCardElement,
+        Reset,
+        DrawFromDeck,
+        SelectCard,
+        DeselectCard,
+        MoveCardToEmptyPlaceholderCardElement,
     });
 
     useEffect(() => Reset(), []);
