@@ -45,8 +45,8 @@ function BigFigure() {
                 .filter(cardType =>
                     !cardType.toString().includes("Joker"))
                 .sort(() => Math.random() - 0.5)
-                .map(cardType =>
-                    <div className="card-container" key={cardType}>
+                .map((cardType, i) =>
+                    <div className="card-container" key={i}>
                         <CardElement
                             card={Deck.filter(card => card.type == cardType)[
                                 ~~(Math.random() * Deck.filter(card =>
