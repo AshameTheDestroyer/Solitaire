@@ -10,7 +10,7 @@ html {
 }
 
 :root {
-    --main-colour: #00D647; // #F00;
+    --main-colour: #00D647;
     --background-colour: #222;
     --background-darker-colour: #111;
     --fore-colour: #FFF;
@@ -19,7 +19,6 @@ html {
     --best-bezier-curve: cubic-bezier(0.15, 0.95, 0.3, 1.5);
 
     --main-colour-filter: invert(40%) sepia(40%) saturate(3678%) hue-rotate(98deg) brightness(99%) contrast(105%);
-    //  sepia() saturate(1000%) hue-rotate(100deg) invert(1) brightness(200%);
 
     font-size: 62.5%;
 }
@@ -35,6 +34,10 @@ body {
     color: var(--fore-colour);
     background-color: var(--background-colour);
 
+    transition:
+        color 500ms,
+        background-color 500ms;
+
     &::before {
         content: "";
 
@@ -45,6 +48,8 @@ body {
         background-size: 3em 3em;
 
         opacity: 0.25;
+
+        z-index: -1;
     }
 
     &.light-themed::before {

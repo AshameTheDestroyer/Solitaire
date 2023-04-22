@@ -17,21 +17,17 @@ type MainStateProps = {
 export const MainContext = createContext<MainStateProps>();
 
 const darkThemeStyle: React.CSSProperties = {
-    "--main-colour": "#00D647",
     "--background-colour": "#222",
     "--background-darker-colour": "#111",
     "--fore-colour": "#FFF",
     "--fore-darker-colour": "#999",
-    "--main-colour-filter": "invert(40%) sepia(40%) saturate(3678%) hue-rotate(98deg) brightness(99%) contrast(105%)",
 } as React.CSSProperties;
 
 const lightThemeStyle: React.CSSProperties = {
-    "--main-colour": "#F00",
     "--background-colour": "#FFF",
     "--background-darker-colour": "#999",
     "--fore-colour": "#222",
     "--fore-darker-colour": "#111",
-    "--main-colour-filter": "sepia() saturate(1000%) hue-rotate(100deg) invert(1) brightness(200%)",
 } as React.CSSProperties;
 
 const ROOT: HTMLElement = document.querySelector(":root");

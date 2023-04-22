@@ -13,6 +13,7 @@ type CardElementProps = {
     isSelected?: boolean;
     isSelectable?: boolean;
     isClickable?: boolean;
+    isAdaptable?: boolean;
     onClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 };
 
@@ -23,6 +24,7 @@ export default function CardElement({
     isSelected = false,
     isSelectable = true,
     isClickable = true,
+    isAdaptable = true,
     onClick,
 }: CardElementProps) {
     function CardElementClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>): void {
@@ -51,7 +53,8 @@ export default function CardElement({
             `${card.type.toLowerCase()} ` +
             `${isFlipped ? "flipped" : ""} ` +
             `${isSelected ? "selected" : ""} ` +
-            `${isClickable ? "clickable" : ""}`}
+            `${isClickable ? "clickable" : ""} ` +
+            `${!isAdaptable ? "unadaptable" : ""}`}
 
             data-digit={card.digit}
             onClick={CardElementClick}>

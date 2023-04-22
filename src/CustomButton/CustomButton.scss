@@ -1,15 +1,54 @@
 .custom-button {
-    $padding: 2rem;
+    --padding: 2.5rem;
     --character-count: 0;
 
     position: relative;
 
-    min-width: calc(var(--character-count) * 1ch + $padding * 2);
+    min-width: calc(var(--character-count) * 1ch + var(--padding) * 2);
     min-height: 3.2rem;
 
-    padding: $padding;
+    padding: calc(var(--padding) / 1.5);
 
     border-width: 0.2rem;
+
+    transition: transform 500ms;
+
+    &:is(:hover, :focus-within) {
+        transform: scale(1.1);
+    }
+
+    &.emphasized-button {
+        background-color: var(--main-colour) !important;
+    }
+
+    &.arrowed-button {
+        --padding-: 7rem;
+
+        padding: var(--padding) var(--padding-);
+
+        &::after {
+            content: "";
+
+            position: absolute;
+            top: 50%;
+            right: 0;
+            transform: translate(-25%, -50%) rotate(-90deg);
+
+            width: calc(var(--padding) * 1.25);
+            aspect-ratio: 1;
+
+            background-image: url("../Icons/arrow_thin.svg");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 100%;
+
+            transition: filter 500ms;
+        }
+
+        a {
+            right: calc(var(--padding-) / 2);
+        }
+    }
 
     a {
         position: absolute;
@@ -20,5 +59,13 @@
         place-items: center;
 
         pointer-events: none;
+    }
+}
+
+.light-themed .custom-button {
+    border-width: 0.3rem;
+
+    &.arrowed-button::after {
+        filter: invert(1);
     }
 }

@@ -7,7 +7,8 @@ import CardPlaceholderElement from "../CardPlaceholderElement/CardPlaceholderEle
 
 import "./PlayingSection.scss";
 
-const CARD_ANIMATION_DELAY: number = 350;
+const CARD_ANIMATION_DELAY: number = 350,
+    SAFTEY_CARD_ANIMATION_DELAY: number = 250;
 
 export default function PlayingSection() {
     const state = useContext(GameboardContext);
@@ -67,7 +68,8 @@ export default function PlayingSection() {
                         isClickable={state.selectedCard
                             && state.selectedCard.card.digit == CardDigit.King
                             && playingPile.length == 0}
-                        animationRemovalTime={CARD_ANIMATION_DELAY * SolitaireManager.PLAYING_PILE_COUNT * 2}
+                        animationRemovalTime={CARD_ANIMATION_DELAY * SolitaireManager.PLAYING_PILE_COUNT
+                            * 2 + SAFTEY_CARD_ANIMATION_DELAY}
                         permenantFirstUnflippedCardIndex={playingPileShownCardCounts[i] - 1}
                         permenantFirstSelectableCardIndex={playingPileShownCardCounts[i] - 1}
                         permenantFirstClickableCardIndex={playingPileShownCardCounts[i] - 1}
