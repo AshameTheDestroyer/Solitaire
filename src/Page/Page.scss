@@ -12,18 +12,16 @@ $playing-pile-count: 7;
 $reserved-card-count: 3;
 
 #page {
-    $padding: 4rem;
+    $padding: 3.5rem;
 
-    height: calc(100vh - $padding * 2);
-    height: calc(100dvh - $padding * 2);
+    min-height: calc(100vh - $padding * 2);
+    min-height: calc(100dvh - $padding * 2);
 
     display: flex;
     place-content: center;
     place-items: center;
 
     padding: $padding;
-
-    overflow: hidden;
 
     &>main {
         display: grid;
@@ -63,6 +61,8 @@ $reserved-card-count: 3;
             border-radius: 100%;
 
             transition: transform 500ms;
+
+            z-index: 2;
 
             &::after {
                 content: "";

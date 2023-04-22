@@ -145,3 +145,16 @@
         left: calc(var(--border-thickness) * -1);
     }
 }
+
+.light-themed .card-placeholder-element {
+
+    &:not(.clickable).lighter-tone>figure {
+        filter: invert(1);
+
+        opacity: 0.25;
+    }
+
+    &>figure {
+        opacity: 1;
+    }
+}

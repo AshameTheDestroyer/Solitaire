@@ -1,13 +1,12 @@
 import { useContext } from "react";
 
 import { MainContext } from "../main";
-import CustomButton from "../CustomButton/CustomButton";
+import { Deck } from "../Classes/Card";
+import CardType from "../Classes/CardType";
 import CardElement from "../Card/CardElement";
-import Card, { Deck } from "../Classes/Card";
+import CustomButton from "../CustomButton/CustomButton";
 
 import "./Page.scss";
-import CardType from "../Classes/CardType";
-import CardDigit from "../Classes/CardDigit";
 
 export default function Page() {
     return (
@@ -46,14 +45,13 @@ function BigFigure() {
                 .filter(cardType =>
                     !cardType.toString().includes("Joker"))
                 .map(cardType =>
-                    <div className="card-container">
+                    <div className="card-container" key={cardType}>
                         <CardElement
                             card={Deck.filter(card => card.type == cardType)[
                                 ~~(Math.random() * Deck.filter(card =>
                                     card.type == cardType).length)]}
                             isSelectable={false}
-                            isAdaptable={false}
-                            key={cardType} />
+                            isAdaptable={false} />
                     </div>
                 )
         } </figure>
