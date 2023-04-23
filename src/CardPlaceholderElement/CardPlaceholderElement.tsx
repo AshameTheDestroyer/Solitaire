@@ -10,43 +10,45 @@ export type PlaceholderType = "deck" | "reservedPile" | "foundationPile" | "play
 
 export type PlacedCard = {
     card: Card;
-    placeholderType: PlaceholderType;
-    placeholderIndex: number;
     cardIndex: number;
+    placeholderIndex: number;
+    placeholderType: PlaceholderType;
 };
 
 type CardPlaceholderElementProps = {
-    type: PlaceholderType,
     index?: number;
     cardType?: CardType;
+    type: PlaceholderType;
+    isClickable?: boolean;
     useLighterTone?: boolean;
-    isDeckPlaceholder?: boolean;
     placedCards?: Array<Card>;
     densityPercentage?: number;
-    orientation?: "vertical" | "horizontal";
-    isClickable?: boolean;
+    isDeckPlaceholder?: boolean;
     animationRemovalTime?: number;
+    orientation?: "vertical" | "horizontal";
     permenantFirstUnflippedCardIndex?: number;
-    permenantFirstSelectableCardIndex?: number;
     permenantFirstClickableCardIndex?: number;
-    onLastCardClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>, placedCard: PlacedCard) => void;
+    permenantFirstSelectableCardIndex?: number;
+
     onClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+    onLastCardClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>, placedCard: PlacedCard) => void;
 };
 
 export default function CardPlaceholderElement({
     type,
-    index = 0,
     cardType,
-    useLighterTone = false,
-    isDeckPlaceholder = false,
+    index = 0,
     placedCards = [],
-    densityPercentage = 50,
-    orientation = "vertical",
     isClickable = false,
     animationRemovalTime,
+    densityPercentage = 50,
+    useLighterTone = false,
+    orientation = "vertical",
+    isDeckPlaceholder = false,
     permenantFirstUnflippedCardIndex = null,
-    permenantFirstSelectableCardIndex = null,
     permenantFirstClickableCardIndex = null,
+    permenantFirstSelectableCardIndex = null,
+
     onLastCardClick,
     onClick,
 }: CardPlaceholderElementProps) {
@@ -54,29 +56,27 @@ export default function CardPlaceholderElement({
 
     const [firstUnflippedCardIndex, setFirstUnflippedCardIndex] =
         useState(permenantFirstUnflippedCardIndex);
-    const [firstSelectableCardIndex, setFirstSelectableCardIndex] =
-        useState(permenantFirstSelectableCardIndex);
     const [firstClickableCardIndex, setFirstClickableCardIndex] =
         useState(permenantFirstClickableCardIndex);
+    const [firstSelectableCardIndex, setFirstSelectableCardIndex] =
+        useState(permenantFirstSelectableCardIndex);
 
     const CARD_PLACEHOLDER_ELEMENT = useRef<HTMLDivElement>();
 
-    useEffect(() => {
-        SetAnimationRemovalTimer();
-    }, []);
+    useEffect(() => SetAnimationRemovalTimer(), []);
 
     useEffect(() => {
         setFirstUnflippedCardIndex(
             permenantFirstUnflippedCardIndex ?? placedCards.length - 1);
-        setFirstSelectableCardIndex(
-            permenantFirstSelectableCardIndex ?? placedCards.length - 1);
         setFirstClickableCardIndex(
             permenantFirstClickableCardIndex ?? placedCards.length - 1);
+        setFirstSelectableCardIndex(
+            permenantFirstSelectableCardIndex ?? placedCards.length - 1);
     }, [
         placedCards.length,
         permenantFirstUnflippedCardIndex,
-        permenantFirstSelectableCardIndex,
         permenantFirstClickableCardIndex,
+        permenantFirstSelectableCardIndex,
     ]);
 
     function SetAnimationRemovalTimer(): void {
@@ -114,10 +114,10 @@ export default function CardPlaceholderElement({
                     <CardElement
                         card={placedCard}
                         placeholderType={type}
-                        isFlipped={i < firstUnflippedCardIndex}
                         isFlippable={false}
-                        isSelectable={i >= firstSelectableCardIndex}
+                        isFlipped={i < firstUnflippedCardIndex}
                         isClickable={i >= firstClickableCardIndex}
+                        isSelectable={i >= firstSelectableCardIndex}
                         onClick={e => onLastCardClick?.(e, {
                             card: placedCard,
                             placeholderType: type,

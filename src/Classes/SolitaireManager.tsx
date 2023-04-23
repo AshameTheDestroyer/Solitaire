@@ -3,13 +3,13 @@ import Card, { Deck } from "./Card";
 
 export default class SolitaireManager {
     public deck: Array<Card>;
-    public foundationPiles: Array<Array<Card>>;
-    public playingPiles: Array<Array<Card>>;
     public reservedPiles: Array<Card>;
+    public playingPiles: Array<Array<Card>>;
+    public foundationPiles: Array<Array<Card>>;
 
-    public static readonly FOUNDATION_PILE_COUNT: number = 4;
     public static readonly PLAYING_PILE_COUNT: number = 7;
     public static readonly CARD_DRAWING_COUNT: number = 3;
+    public static readonly FOUNDATION_PILE_COUNT: number = 4;
 
     public constructor() {
         this.Reset();

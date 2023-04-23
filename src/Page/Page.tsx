@@ -31,7 +31,8 @@ function ThemeTogglingButton() {
     const state = useContext(MainContext);
 
     return (
-        <button id="theme-toggling-button"
+        <button
+            id="theme-toggling-button"
             className={`${state.isDarkThemed ? "dark" : "light"}-themed-button`}
             title={`Toggles the theme into ${state.isDarkThemed ? "Light" : "Dark"} Mode.`}
             onClick={e => state.ToggleDarkTheme()} />
@@ -48,11 +49,11 @@ function BigFigure() {
                 .map((cardType, i) =>
                     <div className="card-container" key={i}>
                         <CardElement
+                            isSelectable={false}
+                            isAdaptable={false}
                             card={Deck.filter(card => card.type == cardType)[
                                 ~~(Math.random() * Deck.filter(card =>
-                                    card.type == cardType).length)]}
-                            isSelectable={false}
-                            isAdaptable={false} />
+                                    card.type == cardType).length)]} />
                     </div>
                 )
         } </figure>

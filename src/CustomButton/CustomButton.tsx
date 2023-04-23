@@ -4,32 +4,36 @@ import { Link } from "react-router-dom";
 import "./CustomButton.scss";
 
 type CustomButtonProps = {
-    children?: Array<React.ReactElement>;
     id?: string;
     className?: string;
-    title?: string;
+    children?: Array<React.ReactElement>;
+
     href?: string;
     text?: string;
-    confirmationMessage?: string;
+    title?: string;
     external?: boolean;
-    target?: "_blank" | "_parent" | "_self" | "_top";
     isStatic?: boolean;
+    confirmationMessage?: string;
     requireDoubleClicking?: boolean;
+    target?: "_blank" | "_parent" | "_self" | "_top";
+
     onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 };
 
 export default function CustomButton({
-    children,
     id,
+    children,
     className,
-    title,
-    href,
+
     text,
-    confirmationMessage,
-    external = false,
+    href,
+    title,
     target = "_self",
+    external = false,
     isStatic = false,
+    confirmationMessage,
     requireDoubleClicking = false,
+
     onClick,
 }: CustomButtonProps) {
     function CreateClickEvent(eventType: "click" | "doubleClick"):
@@ -50,8 +54,8 @@ export default function CustomButton({
     }
 
     return (
-        <button id={id}
-            className={`custom-button ${className}`}
+        <button
+            id={id} className={`custom-button ${className}`}
             title={title}
             onClick={CreateClickEvent("click")}
             onDoubleClick={CreateClickEvent("doubleClick")}

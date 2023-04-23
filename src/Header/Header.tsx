@@ -56,24 +56,24 @@ export default function Header() {
             <section ref={PLACEHOLDER_ELEMENT_CONTAINER_REF}>
                 <CardPlaceholderElement
                     type="deck"
-                    isDeckPlaceholder={true}
                     useLighterTone={true}
+                    isDeckPlaceholder={true}
                     placedCards={state.solitaireManager.deck}
                     densityPercentage={SMALL_DENSITY_PERCENTAGE}
                     permenantFirstUnflippedCardIndex={state.solitaireManager.deck.length}
                     isClickable={!state.selectedCard
                         && state.solitaireManager.deck.length == 0
                         && state.solitaireManager.reservedPiles.length > 0}
-                    onLastCardClick={DeckClick}
-                    onClick={DeckClick} />
+                    onClick={DeckClick}
+                    onLastCardClick={DeckClick} />
 
                 <CardPlaceholderElement
                     type="reservedPile"
-                    placedCards={state.solitaireManager.reservedPiles}
                     orientation="horizontal"
                     permenantFirstUnflippedCardIndex={0}
-                    permenantFirstSelectableCardIndex={state.solitaireManager.reservedPiles.length - 1}
+                    placedCards={state.solitaireManager.reservedPiles}
                     permenantFirstClickableCardIndex={state.solitaireManager.reservedPiles.length - 1}
+                    permenantFirstSelectableCardIndex={state.solitaireManager.reservedPiles.length - 1}
                     onLastCardClick={(e, placedCard) => state.SelectCard(placedCard)} />
             </section>
 
@@ -83,15 +83,15 @@ export default function Header() {
                         !cardType.toString().includes("Joker"))
                     .map((cardType, i) =>
                         <CardPlaceholderElement
+                            index={i}
+                            cardType={cardType}
                             type="foundationPile"
                             placedCards={state.solitaireManager.foundationPiles[i]}
-                            cardType={cardType}
                             densityPercentage={SMALL_DENSITY_PERCENTAGE}
                             isClickable={state.selectedCard
                                 && state.selectedCard.card.digit == CardDigit.Ace
                                 && state.selectedCard.card.type == cardType
                                 && state.solitaireManager.foundationPiles[i].length == 0}
-                            index={i}
                             onLastCardClick={(e, placedCard) => state.SelectCard(placedCard)}
                             onClick={e => state.MoveCardToEmptyPlaceholderCardElement(
                                 "foundationPile", i)}

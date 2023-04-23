@@ -3,15 +3,15 @@ import CardDigit from "./CardDigit";
 import CardColour, { GetCardColour } from "./CardColour";
 
 type CardConstructorProps = {
-    digit: CardDigit,
-    type: CardType,
+    digit: CardDigit;
+    type: CardType;
 };
 
 type ComparisonResultType = -1 | 0 | 1 | null;
 
 export default class Card {
-    public digit: CardDigit;
     public type: CardType;
+    public digit: CardDigit;
     public colour: CardColour;
 
     constructor(props: CardConstructorProps) {
@@ -32,7 +32,7 @@ export default class Card {
         return this.digit == CardDigit.Ace ? 1 : Number.parseInt(this.digit);
     }
 
-    public get isJoker(): boolean {
+    private get isJoker(): boolean {
         return [CardType.ColourfulJoker, CardType.ColourlessJoker].includes(this.type);
     }
 

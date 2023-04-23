@@ -1,6 +1,6 @@
-import { CSSProperties, createContext, useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { CSSProperties, createContext, useEffect, useState } from "react";
 
 import Page from "./Page/Page";
 import Gameboard from "./Gameboard/Gameboard";
@@ -10,24 +10,24 @@ import "./index.scss";
 
 type MainStateProps = {
     isDarkThemed: boolean;
+
     ToggleDarkTheme: () => void;
 };
 
-// @ts-ignore
-export const MainContext = createContext<MainStateProps>();
+export const MainContext = createContext<MainStateProps>(null);
 
 const darkThemeStyle: React.CSSProperties = {
-    "--background-colour": "#222",
-    "--background-darker-colour": "#111",
-    "--fore-colour": "#FFF",
-    "--fore-darker-colour": "#999",
+    "--fore-colour": "#FFFFFF",
+    "--background-colour": "#222222",
+    "--fore-darker-colour": "#999999",
+    "--background-darker-colour": "#111111",
 } as React.CSSProperties;
 
 const lightThemeStyle: React.CSSProperties = {
-    "--background-colour": "#FFF",
-    "--background-darker-colour": "#999",
-    "--fore-colour": "#222",
-    "--fore-darker-colour": "#111",
+    "--fore-colour": "#222222",
+    "--background-colour": "#FFFFFF",
+    "--fore-darker-colour": "#111111",
+    "--background-darker-colour": "#999999",
 } as React.CSSProperties;
 
 const ROOT: HTMLElement = document.querySelector(":root");
@@ -38,6 +38,7 @@ ReactDOM.createRoot(document.getElementById("root")
 function Index() {
     const [state, setState] = useState<MainStateProps>({
         isDarkThemed: true,
+
         ToggleDarkTheme,
     });
 

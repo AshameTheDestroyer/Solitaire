@@ -60,19 +60,19 @@ export default function PlayingSection() {
             <section> {
                 state.solitaireManager.playingPiles.map((playingPile, i) =>
                     <CardPlaceholderElement
-                        type="playingPile"
                         index={i}
+                        type="playingPile"
                         useLighterTone={true}
-                        placedCards={playingPile}
                         densityPercentage={30}
+                        placedCards={playingPile}
+                        animationRemovalTime={CARD_ANIMATION_DELAY * SolitaireManager.PLAYING_PILE_COUNT
+                            * 2 + SAFTEY_CARD_ANIMATION_DELAY}
                         isClickable={state.selectedCard
                             && state.selectedCard.card.digit == CardDigit.King
                             && playingPile.length == 0}
-                        animationRemovalTime={CARD_ANIMATION_DELAY * SolitaireManager.PLAYING_PILE_COUNT
-                            * 2 + SAFTEY_CARD_ANIMATION_DELAY}
                         permenantFirstUnflippedCardIndex={playingPileShownCardCounts[i] - 1}
-                        permenantFirstSelectableCardIndex={playingPileShownCardCounts[i] - 1}
                         permenantFirstClickableCardIndex={playingPileShownCardCounts[i] - 1}
+                        permenantFirstSelectableCardIndex={playingPileShownCardCounts[i] - 1}
                         onLastCardClick={(e, placedCard) => state.SelectCard(placedCard)}
                         onClick={e => state.MoveCardToEmptyPlaceholderCardElement(
                             "playingPile", i)}

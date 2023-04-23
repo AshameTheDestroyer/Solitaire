@@ -37,16 +37,18 @@ export default function Footer() {
             } </div>
 
             <section>
-                <CustomButton text="Reset"
-                    title="Double click to reset."
+                <CustomButton
                     isStatic
+                    text="Reset"
+                    title="Double click to reset."
                     confirmationMessage="Are you sure you wanna reset the game?"
                     onClick={e => state.Reset()} />
 
-                <CustomButton text="Home"
+                <CustomButton
+                    href="/"
+                    text="Home"
                     title="Double click to go home."
-                    confirmationMessage="Are you sure you wanna leave the game?"
-                    href="/" />
+                    confirmationMessage="Are you sure you wanna leave the game?" />
             </section>
         </footer>
     );

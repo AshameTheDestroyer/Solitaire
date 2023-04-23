@@ -7,13 +7,14 @@ import "./CardElement.scss";
 
 type CardElementProps = {
     card: Card;
-    placeholderType?: PlaceholderType;
     isFlipped?: boolean;
-    isFlippable?: boolean;
     isSelected?: boolean;
-    isSelectable?: boolean;
+    isFlippable?: boolean;
     isClickable?: boolean;
     isAdaptable?: boolean;
+    isSelectable?: boolean;
+    placeholderType?: PlaceholderType;
+
     onClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 };
 
@@ -22,9 +23,10 @@ export default function CardElement({
     isFlipped = false,
     isFlippable = true,
     isSelected = false,
-    isSelectable = true,
     isClickable = true,
     isAdaptable = true,
+    isSelectable = true,
+
     onClick,
 }: CardElementProps) {
     function CardElementClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>): void {
@@ -49,8 +51,8 @@ export default function CardElement({
     return (
         <div className={
             `card-element ` +
-            `${card.colour.toLowerCase()} ` +
             `${card.type.toLowerCase()} ` +
+            `${card.colour.toLowerCase()} ` +
             `${isFlipped ? "flipped" : ""} ` +
             `${isSelected ? "selected" : ""} ` +
             `${isClickable ? "clickable" : ""} ` +
@@ -94,11 +96,11 @@ function NumericFigureDisplayer({
                 return (
                     <div className={
                         "figure-container " +
-                        `${isInMiddle && count == 1 && card.number != 7 ? "centred" : ""} ` +
+                        `${isInMiddle && count == 3 ? "has-middle-figure" : ""} ` +
+                        `${isInMiddle && card.number == 1 ? "enlarged" : ""} ` +
                         `${isInMiddle && card.number == 7 ? "shortened-for-7" : ""} ` +
                         `${isInMiddle && card.number == 10 ? "shortened-for-10" : ""} ` +
-                        `${isInMiddle && card.number == 1 ? "enlarged" : ""} ` +
-                        `${isInMiddle && count == 3 ? "has-middle-figure" : ""}`
+                        `${isInMiddle && count == 1 && card.number != 7 ? "centred" : ""}`
                     } key={i}> {
                             Array(count as number)
                                 .fill(null)

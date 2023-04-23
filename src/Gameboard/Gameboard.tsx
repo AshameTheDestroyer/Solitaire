@@ -11,17 +11,17 @@ import { PlacedCard, PlaceholderType } from "../CardPlaceholderElement/CardPlace
 import "./Gameboard.scss";
 
 type GameboardStateProps = {
-    solitaireManager: SolitaireManager;
     selectedCard: PlacedCard | null;
+    solitaireManager: SolitaireManager;
+
     Reset: () => void;
     DrawFromDeck: () => void;
-    SelectCard: (placedCard: PlacedCard) => void;
     DeselectCard: () => void;
+    SelectCard: (placedCard: PlacedCard) => void;
     MoveCardToEmptyPlaceholderCardElement: (placeholderType: PlaceholderType, placeholderIndex?: number) => void;
 };
 
-// @ts-ignore
-export const GameboardContext = createContext<GameboardStateProps>();
+export const GameboardContext = createContext<GameboardStateProps>(null);
 
 const PlaceableCardPlaceholderTypes: Array<PlaceholderType> = [
     "playingPile",
@@ -30,12 +30,13 @@ const PlaceableCardPlaceholderTypes: Array<PlaceholderType> = [
 
 export default function Gameboard() {
     const [state, setState] = useState<GameboardStateProps>({
-        solitaireManager: new SolitaireManager(),
         selectedCard: null,
+        solitaireManager: new SolitaireManager(),
+
         Reset,
-        DrawFromDeck,
         SelectCard,
         DeselectCard,
+        DrawFromDeck,
         MoveCardToEmptyPlaceholderCardElement,
     });
 
@@ -52,14 +53,6 @@ export default function Gameboard() {
 
         const MINIMUM_TIMEOUT = 10;
         setTimeout(() => ResetCardFlippedStates(), MINIMUM_TIMEOUT);
-    }
-
-    function DrawFromDeck(): void {
-        state.solitaireManager.DrawFromDeck();
-        setState({
-            ...state,
-            solitaireManager: state.solitaireManager,
-        });
     }
 
     function SelectCard(placedCard: PlacedCard): void {
@@ -82,6 +75,14 @@ export default function Gameboard() {
         state.selectedCard = null;
         setState({
             ...state,
+        });
+    }
+
+    function DrawFromDeck(): void {
+        state.solitaireManager.DrawFromDeck();
+        setState({
+            ...state,
+            solitaireManager: state.solitaireManager,
         });
     }
 
@@ -151,13 +152,16 @@ export default function Gameboard() {
             case "foundationPile":
                 if (state.selectedCard.card.type != placedCard.card.type) { return false; }
                 if (state.selectedCard.card.Difference(placedCard.card) != +1) { return false; }
+                if (state.selectedCard.placeholderType == "playingPile" &&
+                    state.selectedCard.card !=
+                    state.solitaireManager.playingPiles[state.selectedCard.placeholderIndex].at(-1)) { return; }
                 break;
 
             case "playingPile":
                 let lastCard: Card =
                     state.solitaireManager.playingPiles[placedCard.placeholderIndex].at(-1);
 
-                if (state.selectedCard.card.colour == placedCard.card.colour) { return false; }
+                if (state.selectedCard.card.colour == lastCard.colour) { return false; }
                 if (state.selectedCard.card.Difference(lastCard) != -1) { return false; }
                 break;
         }
