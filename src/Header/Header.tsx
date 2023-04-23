@@ -61,8 +61,7 @@ export default function Header() {
                     placedCards={state.solitaireManager.deck}
                     densityPercentage={SMALL_DENSITY_PERCENTAGE}
                     permenantFirstUnflippedCardIndex={state.solitaireManager.deck.length}
-                    isClickable={!state.selectedCard
-                        && state.solitaireManager.deck.length == 0
+                    isClickable={state.solitaireManager.deck.length == 0
                         && state.solitaireManager.reservedPiles.length > 0}
                     onClick={DeckClick}
                     onLastCardClick={DeckClick} />
