@@ -2,8 +2,14 @@ import CardType from "./CardType";
 import Card, { Deck } from "./Card";
 
 export default class SolitaireManager {
+    private static instance: SolitaireManager;
+
+    public static get Instance(): SolitaireManager {
+        return this.instance ??= new SolitaireManager();
+    }
+
     public deck: Array<Card>;
-    public reservedPiles: Array<Card>;
+    public reservedCards: Array<Card>;
     public playingPiles: Array<Array<Card>>;
     public foundationPiles: Array<Array<Card>>;
 
@@ -11,7 +17,7 @@ export default class SolitaireManager {
     public static readonly CARD_DRAWING_COUNT: number = 3;
     public static readonly FOUNDATION_PILE_COUNT: number = 4;
 
-    public constructor() {
+    private constructor() {
         this.Reset();
     }
 
@@ -36,7 +42,7 @@ export default class SolitaireManager {
             .fill([])
             .map(_ => new Array<Card>());
 
-        this.reservedPiles = new Array<Card>();
+        this.reservedCards = new Array<Card>();
     }
 
     private ShuffleDeck(): void {
@@ -57,12 +63,12 @@ export default class SolitaireManager {
     public DrawFromDeck(count: number = SolitaireManager.CARD_DRAWING_COUNT,
         isUnshifting = false): void {
         if (!this.deck.length) {
-            if (!this.reservedPiles.length) { return; }
+            if (!this.reservedCards.length) { return; }
 
-            this.deck.push(...this.reservedPiles.reverse());
+            this.deck.push(...this.reservedCards.reverse());
 
-            this.reservedPiles =
-                this.reservedPiles.filter(() => false);
+            this.reservedCards =
+                this.reservedCards.filter(() => false);
 
             return;
         }
@@ -72,22 +78,22 @@ export default class SolitaireManager {
             if (card == undefined) { break; }
 
             if (!isUnshifting) {
-                this.reservedPiles.push(card);
+                this.reservedCards.push(card);
 
                 continue;
             }
 
-            this.reservedPiles.unshift(card);
+            this.reservedCards.unshift(card);
         }
     }
 
-    public DrawFromReservedPile(playingPileIndex: number): void {
-        let card: Card | undefined = this.reservedPiles.pop();
+    public DrawFromReservedCards(playingPileIndex: number): void {
+        let card: Card | undefined = this.reservedCards.pop();
         if (card == undefined) { return; }
 
         this.playingPiles[playingPileIndex].push(card);
 
-        if (this.reservedPiles.length < SolitaireManager.CARD_DRAWING_COUNT) {
+        if (this.reservedCards.length < SolitaireManager.CARD_DRAWING_COUNT) {
             this.DrawFromDeck(1, true);
         }
     }
@@ -109,14 +115,14 @@ export default class SolitaireManager {
             this.playingPiles[firstIndex].filter((_, i) => i < cardIndex);
     }
 
-    public ClaimFromReservedPile(): void {
-        let card: Card | undefined = this.reservedPiles.pop();
+    public ClaimFromReservedCards(): void {
+        let card: Card | undefined = this.reservedCards.pop();
         if (card == undefined) { return; }
 
         let foundationPileIndex: number = Object.values(CardType).indexOf(card.type);
         this.foundationPiles[foundationPileIndex].push(card);
 
-        if (this.reservedPiles.length < SolitaireManager.CARD_DRAWING_COUNT) {
+        if (this.reservedCards.length < SolitaireManager.CARD_DRAWING_COUNT) {
             this.DrawFromDeck(1, true);
         }
     }

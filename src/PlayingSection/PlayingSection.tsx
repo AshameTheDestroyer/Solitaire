@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 
 import CardDigit from "../Classes/CardDigit";
 import { GameboardContext } from "../Gameboard/Gameboard";
@@ -13,24 +13,17 @@ const CARD_ANIMATION_DELAY: number = 350,
 export default function PlayingSection() {
     const state = useContext(GameboardContext);
 
-    const [playingPileLengths, setPlayingPileLengths] = useState<Array<number>>([]);
-    const [playingPileShownCardCounts, setPlayingPileShownCardCounts] = useState<Array<number>>(
-        new Array<number>(SolitaireManager.PLAYING_PILE_COUNT).fill(-1));
-
     useEffect(() => {
-        setPlayingPileLengths(() =>
+        state.setPlayingPileLengths(() =>
             state.solitaireManager.playingPiles.map(
-                playingPile => playingPile.length)
-        );
-    }, [
-        ...state.solitaireManager.playingPiles.map(
-            playingPile => playingPile.length),
-    ]);
+                playingPile => playingPile.length));
+    }, [...state.solitaireManager.playingPiles.map(
+        playingPile => playingPile.length)]);
 
     useEffect(() => {
-        let playingPileShownCardCounts_: Array<number> = [...playingPileShownCardCounts];
+        let playingPileShownCardCounts_: Array<number> = [...state.playingPileShownCardCounts];
 
-        playingPileLengths.forEach((playingPileLength, i) => {
+        state.playingPileLengths.forEach((playingPileLength, i) => {
             if (playingPileShownCardCounts_[i] == -1 && playingPileLength > 0) {
                 playingPileShownCardCounts_[i] = playingPileLength;
 
@@ -42,14 +35,15 @@ export default function PlayingSection() {
             playingPileShownCardCounts_[i] = playingPileLength;
         });
 
-        setPlayingPileShownCardCounts([...playingPileShownCardCounts_]);
-    }, [playingPileLengths]);
+        state.setPlayingPileShownCardCounts(() => [...playingPileShownCardCounts_]);
+    }, [state.playingPileLengths]);
 
     useEffect(() => {
-        if (!playingPileLengths.some((playingPileLength, i) =>
-            playingPileLength != i + 1)) { return; }
+        if (state.commandManager.canUndo ||
+            !state.playingPileLengths.some((playingPileLength, i) =>
+                playingPileLength != i + 1)) { return; }
 
-        setPlayingPileShownCardCounts(
+        state.setPlayingPileShownCardCounts(() =>
             new Array<number>(SolitaireManager.PLAYING_PILE_COUNT).fill(-1));
     }, [state.solitaireManager.deck]);
 
@@ -70,11 +64,11 @@ export default function PlayingSection() {
                         isClickable={state.selectedCard
                             && state.selectedCard.card.digit == CardDigit.King
                             && playingPile.length == 0}
-                        permenantFirstUnflippedCardIndex={playingPileShownCardCounts[i] - 1}
-                        permenantFirstClickableCardIndex={playingPileShownCardCounts[i] - 1}
-                        permenantFirstSelectableCardIndex={playingPileShownCardCounts[i] - 1}
+                        permenantFirstUnflippedCardIndex={state.playingPileShownCardCounts[i] - 1}
+                        permenantFirstClickableCardIndex={state.playingPileShownCardCounts[i] - 1}
+                        permenantFirstSelectableCardIndex={state.playingPileShownCardCounts[i] - 1}
                         onLastCardClick={(e, placedCard) => state.SelectCard(placedCard)}
-                        onClick={e => state.MoveCardToEmptyPlaceholderCardElement(
+                        onClick={e => state.MoveCardToEmptyCardPlaceholderElement(
                             "playingPile", i)}
                         key={i} />
                 )

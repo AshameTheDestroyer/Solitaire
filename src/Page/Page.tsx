@@ -2,8 +2,9 @@ import { useContext } from "react";
 
 import { MainContext } from "../main";
 import { Deck } from "../Classes/Card";
-import CardType from "../Classes/CardType";
 import CardElement from "../Card/CardElement";
+import CardColour from "../Classes/CardColour";
+import IconButton from "../IconButton/IconButton";
 import CustomButton from "../CustomButton/CustomButton";
 
 import "./Page.scss";
@@ -31,9 +32,8 @@ function ThemeTogglingButton() {
     const state = useContext(MainContext);
 
     return (
-        <button
+        <IconButton
             id="theme-toggling-button"
-            className={`${state.isDarkThemed ? "dark" : "light"}-themed-button`}
             title={`Toggles the theme into ${state.isDarkThemed ? "Light" : "Dark"} Mode.`}
             onClick={e => state.ToggleDarkTheme()} />
     );
@@ -42,18 +42,21 @@ function ThemeTogglingButton() {
 function BigFigure() {
     return (
         <figure> {
-            Object.values(CardType)
-                .filter(cardType =>
-                    !cardType.toString().includes("Joker"))
-                .sort(() => Math.random() - 0.5)
-                .map((cardType, i) =>
+            Object.values(CardColour)
+                .map(cardColour => [cardColour, cardColour])
+                .flat()
+                .map(cardColour => Deck.filter(
+                    card => card.colour == cardColour)[
+                    ~~(Math.random() * Deck.filter(card =>
+                        card.colour == cardColour).length)])
+                .sort((card, otherCard) =>
+                    card.isJoker ? 0 : otherCard.isJoker ? 1 : Math.random() - 0.5)
+                .map((card, i) =>
                     <div className="card-container" key={i}>
                         <CardElement
                             isSelectable={false}
                             isAdaptable={false}
-                            card={Deck.filter(card => card.type == cardType)[
-                                ~~(Math.random() * Deck.filter(card =>
-                                    card.type == cardType).length)]} />
+                            card={card} />
                     </div>
                 )
         } </figure>

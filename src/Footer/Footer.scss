@@ -1,7 +1,7 @@
 #gameboard-footer {
     display: flex;
-    place-content: space-between;
     place-items: center;
+    gap: 2rem;
 
     padding: 1.5rem;
 
@@ -10,8 +10,74 @@
     z-index: 1;
 
     section {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
+        display: flex;
+        flex-direction: row;
+        place-content: center;
+        place-items: center;
+        gap: 3rem;
+
+        .command-button {
+            --icon-url: url("../Icons/undo.svg");
+
+            &::after {
+                inset: 0.5rem;
+            }
+
+            &:not(:disabled):is(:hover, :focus-within) {
+                transform: scale(1.1);
+            }
+
+            &#undo-button {
+
+                &>div {
+                    left: var(--offset);
+                }
+            }
+
+            &#redo-button {
+
+                &::after {
+                    transform: scaleX(-1);
+                }
+
+                &>div {
+                    right: var(--offset);
+
+                    text-align: end;
+                }
+            }
+
+            &>div {
+                --offset: 40%;
+
+                position: absolute;
+                bottom: -20%;
+
+                min-width: 4ch;
+
+                text-align: start;
+
+                padding: 0 0.5ch;
+
+                background-color: var(--background-colour);
+
+                border: inherit;
+                border-radius: 10rem;
+            }
+        }
+
+        &:last-child {
+            width: 100%;
+
+            place-content: end;
+            gap: 2rem;
+
+            @for $i from 1 through 2 {
+
+                :nth-child(#{$i}) {
+                    grid-column: calc($i + 1);
+                }
+            }
+        }
     }
 }

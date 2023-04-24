@@ -240,6 +240,10 @@ $non-numeric-digit-icons: sword_2, crown_queen, crown_king, joker;
     background-color: var(--background-colour);
 
     border-color: var(--fore-darker-colour);
+
+    &::after {
+        background-color: var(--main-colour);
+    }
 }
 
 @media (width <=Page.$second-screen-width) {

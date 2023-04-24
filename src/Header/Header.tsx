@@ -62,17 +62,17 @@ export default function Header() {
                     densityPercentage={SMALL_DENSITY_PERCENTAGE}
                     permenantFirstUnflippedCardIndex={state.solitaireManager.deck.length}
                     isClickable={state.solitaireManager.deck.length == 0
-                        && state.solitaireManager.reservedPiles.length > 0}
+                        && state.solitaireManager.reservedCards.length > 0}
                     onClick={DeckClick}
                     onLastCardClick={DeckClick} />
 
                 <CardPlaceholderElement
-                    type="reservedPile"
+                    type="reservedCards"
                     orientation="horizontal"
                     permenantFirstUnflippedCardIndex={0}
-                    placedCards={state.solitaireManager.reservedPiles}
-                    permenantFirstClickableCardIndex={state.solitaireManager.reservedPiles.length - 1}
-                    permenantFirstSelectableCardIndex={state.solitaireManager.reservedPiles.length - 1}
+                    placedCards={state.solitaireManager.reservedCards}
+                    permenantFirstClickableCardIndex={state.solitaireManager.reservedCards.length - 1}
+                    permenantFirstSelectableCardIndex={state.solitaireManager.reservedCards.length - 1}
                     onLastCardClick={(e, placedCard) => state.SelectCard(placedCard)} />
             </section>
 
@@ -92,7 +92,7 @@ export default function Header() {
                                 && state.selectedCard.card.type == cardType
                                 && state.solitaireManager.foundationPiles[i].length == 0}
                             onLastCardClick={(e, placedCard) => state.SelectCard(placedCard)}
-                            onClick={e => state.MoveCardToEmptyPlaceholderCardElement(
+                            onClick={e => state.MoveCardToEmptyCardPlaceholderElement(
                                 "foundationPile", i)}
                             key={cardType} />)
             } </section>

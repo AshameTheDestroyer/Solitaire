@@ -6,7 +6,7 @@ import CardElement from "../Card/CardElement";
 
 import "./CardPlaceholderElement.scss";
 
-export type PlaceholderType = "deck" | "reservedPile" | "foundationPile" | "playingPile";
+export type PlaceholderType = "deck" | "reservedCards" | "foundationPile" | "playingPile";
 
 export type PlacedCard = {
     card: Card;

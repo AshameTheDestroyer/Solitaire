@@ -6,7 +6,7 @@ import "./CustomButton.scss";
 type CustomButtonProps = {
     id?: string;
     className?: string;
-    children?: Array<React.ReactElement>;
+    children?: React.ReactElement;
 
     href?: string;
     text?: string;

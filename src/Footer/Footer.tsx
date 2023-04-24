@@ -1,11 +1,14 @@
 import { useState, useEffect, useContext } from "react";
 
+import IconButton from "../IconButton/IconButton";
+import FormatNumber from "../Classes/NumberFormatter";
 import CustomButton from "../CustomButton/CustomButton";
 import { GameboardContext } from "../Gameboard/Gameboard";
 
 import "./Footer.scss";
 
-const TIME_STRING_LENGTH = 8;
+const TIME_STRING_LENGTH = 8,
+    MOVEMENT_STRING_LENGTH = 3;
 
 export default function Footer() {
     const state = useContext(GameboardContext);
@@ -28,26 +31,51 @@ export default function Footer() {
                 return value;
             });
         }, FULL_SECOND));
-    }, [state.solitaireManager.deck]);
+    }, []);
 
     return (
         <footer id="gameboard-footer">
-            <div id="timer"> {
-                timer.toTimeString().substring(0, TIME_STRING_LENGTH)
-            } </div>
+            <section>
+                <IconButton
+                    id="undo-button"
+                    className="command-button"
+                    title="Undoes the latest movement."
+                    isClickable={state.commandManager.canUndo}
+                    onClick={e => state.Undo()}>
+                    <div> {
+                        FormatNumber(state.commandManager.undoableMovementCount,
+                            MOVEMENT_STRING_LENGTH)
+                    } </div>
+                </IconButton>
+
+                <div id="timer"> {
+                    timer.toTimeString().substring(0, TIME_STRING_LENGTH)
+                } </div>
+
+                <IconButton
+                    id="redo-button"
+                    className="command-button"
+                    title="Redoes the latest undone movement."
+                    isClickable={state.commandManager.canRedo}
+                    onClick={e => state.Redo()}>
+                    <div> {
+                        FormatNumber(state.commandManager.redoableMovementCount,
+                            MOVEMENT_STRING_LENGTH)
+                    } </div>
+                </IconButton>
+            </section>
+
 
             <section>
                 <CustomButton
                     isStatic
                     text="Reset"
-                    title="Double click to reset."
                     confirmationMessage="Are you sure you wanna reset the game?"
-                    onClick={e => state.Reset()} />
+                    onClick={e => (state.Reset(), setTimer(new Date("0")))} />
 
                 <CustomButton
                     href="/"
                     text="Home"
-                    title="Double click to go home."
                     confirmationMessage="Are you sure you wanna leave the game?" />
             </section>
         </footer>

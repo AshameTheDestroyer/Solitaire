@@ -51,46 +51,6 @@ $reserved-card-count: 3;
             position: absolute;
             top: $padding;
             right: $padding;
-
-            width: 5rem;
-            aspect-ratio: 1;
-
-            background-color: var(--main-colour);
-
-            border-width: 0.3rem;
-            border-radius: 100%;
-
-            transition: transform 500ms;
-
-            z-index: 2;
-
-            &::after {
-                content: "";
-
-                position: absolute;
-                inset: 0;
-
-                background-image: var(--icon-url);
-                background-repeat: no-repeat;
-                background-position: center;
-                background-size: 80%;
-            }
-
-            &:is(:hover, :focus-within) {
-                transform: rotate(-25deg) scale(1.1);
-            }
-
-            &.dark-themed-button {
-                --icon-url: url("../Icons/light_mode.svg");
-            }
-
-            &.light-themed-button {
-                --icon-url: url("../Icons/dark_mode_2.svg");
-
-                &::after {
-                    filter: invert(1);
-                }
-            }
         }
 
         &>figure {
@@ -169,6 +129,14 @@ $reserved-card-count: 3;
         display: flex;
         gap: 2rem;
     }
+}
+
+.dark-themed #theme-toggling-button {
+    --icon-url: url("../Icons/light_mode.svg") !important;
+}
+
+.light-themed #theme-toggling-button {
+    --icon-url: url("../Icons/dark_mode_2.svg") !important;
 }
 
 @media (width >=$first-screen-width) {

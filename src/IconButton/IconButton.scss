@@ -1,0 +1,45 @@
+.icon-button {
+    position: relative;
+
+    width: 5rem;
+    aspect-ratio: 1;
+
+    display: flex;
+    place-content: center;
+    place-items: center;
+
+    background-color: var(--main-colour);
+
+    border-width: 0.3rem;
+    border-radius: 100%;
+
+    transition: transform 500ms;
+
+    z-index: 2;
+
+    &::after {
+        content: "";
+
+        position: absolute;
+        inset: 0;
+
+        background-image: var(--icon-url);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 80%;
+    }
+
+    &:not(:disabled):is(:hover, :focus-within) {
+        transform: rotate(-25deg) scale(1.1);
+    }
+
+    &:disabled {
+        cursor: auto;
+
+        filter: contrast(75%) brightness(50%);
+    }
+}
+
+.light-themed .icon-button::after {
+    filter: invert(1);
+}

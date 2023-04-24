@@ -4,6 +4,7 @@
     min-height: 100vh;
     min-height: 100dvh;
 
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: auto 1fr auto;
 }

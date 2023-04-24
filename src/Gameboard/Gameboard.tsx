@@ -4,6 +4,7 @@ import Card from "../Classes/Card";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 import CardDigit from "../Classes/CardDigit";
+import CommandManager from "../Classes/CommandManager";
 import SolitaireManager from "../Classes/SolitaireManager";
 import PlayingSection from "../PlayingSection/PlayingSection";
 import { PlacedCard, PlaceholderType } from "../CardPlaceholderElement/CardPlaceholderElement";
@@ -11,14 +12,21 @@ import { PlacedCard, PlaceholderType } from "../CardPlaceholderElement/CardPlace
 import "./Gameboard.scss";
 
 type GameboardStateProps = {
+    commandManager: CommandManager;
     selectedCard: PlacedCard | null;
+    playingPileLengths: Array<number>;
     solitaireManager: SolitaireManager;
+    playingPileShownCardCounts: Array<number>;
 
+    Undo: () => void;
+    Redo: () => void;
     Reset: () => void;
     DrawFromDeck: () => void;
     DeselectCard: () => void;
     SelectCard: (placedCard: PlacedCard) => void;
-    MoveCardToEmptyPlaceholderCardElement: (placeholderType: PlaceholderType, placeholderIndex?: number) => void;
+    setPlayingPileLengths: (setter: (previousValue: Array<number>) => Array<number>) => void;
+    setPlayingPileShownCardCounts: (setter: (previousValue: Array<number>) => Array<number>) => void;
+    MoveCardToEmptyCardPlaceholderElement: (placeholderType: PlaceholderType, placeholderIndex?: number) => void;
 };
 
 export const GameboardContext = createContext<GameboardStateProps>(null);
@@ -31,25 +39,31 @@ const PlaceableCardPlaceholderTypes: Array<PlaceholderType> = [
 export default function Gameboard() {
     const [state, setState] = useState<GameboardStateProps>({
         selectedCard: null,
-        solitaireManager: new SolitaireManager(),
+        commandManager: CommandManager.Instance,
+        solitaireManager: SolitaireManager.Instance,
+        playingPileLengths: new Array(SolitaireManager.PLAYING_PILE_COUNT).fill(-1),
+        playingPileShownCardCounts: new Array(SolitaireManager.PLAYING_PILE_COUNT).fill(-1),
 
+        Undo,
+        Redo,
         Reset,
         SelectCard,
         DeselectCard,
         DrawFromDeck,
-        MoveCardToEmptyPlaceholderCardElement,
+        setPlayingPileLengths,
+        setPlayingPileShownCardCounts,
+        MoveCardToEmptyCardPlaceholderElement,
     });
 
     useEffect(() => Reset(), []);
 
     function Reset(): void {
         state.solitaireManager.Start();
+        CommandManager.Instance.Reset();
+
         state.selectedCard = null;
 
-        setState({
-            ...state,
-            solitaireManager: state.solitaireManager,
-        });
+        setState({ ...state });
 
         const MINIMUM_TIMEOUT = 10;
         setTimeout(() => ResetCardFlippedStates(), MINIMUM_TIMEOUT);
@@ -61,9 +75,7 @@ export default function Gameboard() {
         state.selectedCard = state.selectedCard
             && state.selectedCard.card == placedCard.card ? null : placedCard;
 
-        setState({
-            ...state,
-        });
+        setState({ ...state });
     }
 
     function DeselectCard(): void {
@@ -73,139 +85,252 @@ export default function Gameboard() {
         });
 
         state.selectedCard = null;
-        setState({
-            ...state,
-        });
+        setState({ ...state });
     }
 
     function DrawFromDeck(): void {
-        state.solitaireManager.DrawFromDeck();
-        setState({
-            ...state,
-            solitaireManager: state.solitaireManager,
+        let deck: Array<Card> = [...state.solitaireManager.deck],
+            reservedCards: Array<Card> = [...state.solitaireManager.reservedCards];
+
+        CommandManager.Instance.Invoke({
+            Action: () => state.solitaireManager.DrawFromDeck(),
+            ReversedAction: () => {
+                state.solitaireManager.deck = [...deck];
+                state.solitaireManager.reservedCards = [...reservedCards];
+            },
         });
+
+        setState({ ...state });
     }
 
-    function MoveCardToEmptyPlaceholderCardElement(
+    function MoveCardToEmptyCardPlaceholderElement(
         placeholderType: PlaceholderType, placeholderIndex: number = 0): void {
+        let selectedCard: PlacedCard = state.selectedCard;
+
         if (!PlaceableCardPlaceholderTypes.includes(placeholderType)) { return; }
-        if (!state.selectedCard) { return; }
+        if (!selectedCard) { return; }
 
         switch (placeholderType) {
             case "foundationPile":
-                if (state.selectedCard.card.digit != CardDigit.Ace) { return; }
+                if (selectedCard.card.digit != CardDigit.Ace) { return; }
                 break;
 
             case "playingPile":
-                if (state.selectedCard.card.digit != CardDigit.King) { return; }
+                if (selectedCard.card.digit != CardDigit.King) { return; }
                 break;
         }
 
-        switch (state.selectedCard.placeholderType) {
+        switch (selectedCard.placeholderType) {
             case "foundationPile":
-                state.solitaireManager.MoveFromFoundationPile(
-                    state.selectedCard.placeholderIndex,
-                    placeholderIndex);
+                CommandManager.Instance.Invoke({
+                    Action: () =>
+                        state.solitaireManager.MoveFromFoundationPile(
+                            selectedCard.placeholderIndex,
+                            placeholderIndex),
+
+                    ReversedAction: () =>
+                        state.solitaireManager.ClaimFromPlayingPile(
+                            selectedCard.placeholderIndex),
+                });
                 break;
 
-            case "reservedPile":
+            case "reservedCards":
+                let reservedCards: Array<Card> = [...state.solitaireManager.reservedCards];
+
                 switch (placeholderType) {
                     case "foundationPile":
-                        state.solitaireManager.ClaimFromReservedPile();
+                        CommandManager.Instance.Invoke({
+                            Action: () =>
+                                state.solitaireManager.ClaimFromReservedCards(),
+
+                            ReversedAction: () => {
+                                state.solitaireManager.reservedCards = [...reservedCards];
+                                state.solitaireManager.foundationPiles[placeholderIndex] = [];
+                            },
+                        });
                         break;
 
                     case "playingPile":
-                        state.solitaireManager.DrawFromReservedPile(
-                            placeholderIndex);
+                        CommandManager.Instance.Invoke({
+                            Action: () =>
+                                state.solitaireManager.DrawFromReservedCards(
+                                    placeholderIndex),
+
+                            ReversedAction: () => {
+                                state.solitaireManager.reservedCards = [...reservedCards];
+                                state.solitaireManager.playingPiles[placeholderIndex] = [];
+                            },
+                        });
                         break;
                 } break;
 
             case "playingPile":
                 switch (placeholderType) {
                     case "foundationPile":
-                        state.solitaireManager.ClaimFromPlayingPile(
-                            state.selectedCard.placeholderIndex);
+                        CommandManager.Instance.Invoke({
+                            Action: () =>
+                                state.solitaireManager.ClaimFromPlayingPile(
+                                    selectedCard.placeholderIndex),
+
+                            ReversedAction: () => {
+                                state.solitaireManager.MoveFromFoundationPile(
+                                    placeholderIndex,
+                                    selectedCard.placeholderIndex);
+
+                                state.playingPileShownCardCounts[selectedCard.placeholderIndex]++;
+                            },
+                        });
                         break;
 
                     case "playingPile":
-                        state.solitaireManager.MoveFromPlayingPile(
-                            state.selectedCard.placeholderIndex,
-                            placeholderIndex,
-                            state.selectedCard.cardIndex);
+                        CommandManager.Instance.Invoke({
+                            Action: () =>
+                                state.solitaireManager.MoveFromPlayingPile(
+                                    selectedCard.placeholderIndex,
+                                    placeholderIndex,
+                                    selectedCard.cardIndex),
+
+                            ReversedAction: () => {
+                                state.solitaireManager.MoveFromPlayingPile(
+                                    placeholderIndex,
+                                    selectedCard.placeholderIndex, 0);
+
+                                state.playingPileShownCardCounts[selectedCard.placeholderIndex]++;
+                            },
+                        });
                         break;
                 } break;
         }
 
         DeselectCard();
-
-        setState({
-            ...state,
-            solitaireManager: state.solitaireManager,
-        });
+        setState({ ...state });
     }
 
     function UpdateCardPlace(placedCard: PlacedCard): boolean {
+        let selectedCard: PlacedCard = state.selectedCard;
+
         if (!PlaceableCardPlaceholderTypes.includes(placedCard.placeholderType)) { return; }
-        if (!state.selectedCard) { return false; }
+        if (!selectedCard) { return false; }
 
         switch (placedCard.placeholderType) {
             case "foundationPile":
-                if (state.selectedCard.card.type != placedCard.card.type) { return false; }
-                if (state.selectedCard.card.Difference(placedCard.card) != +1) { return false; }
-                if (state.selectedCard.placeholderType == "playingPile" &&
-                    state.selectedCard.card !=
-                    state.solitaireManager.playingPiles[state.selectedCard.placeholderIndex].at(-1)) { return; }
+                if (selectedCard.card.type != placedCard.card.type) { return false; }
+                if (selectedCard.card.Difference(placedCard.card) != +1) { return false; }
+                if (selectedCard.placeholderType == "playingPile" &&
+                    selectedCard.card != state.solitaireManager.playingPiles[
+                        selectedCard.placeholderIndex].at(-1)) { return; }
                 break;
 
             case "playingPile":
                 let lastCard: Card =
                     state.solitaireManager.playingPiles[placedCard.placeholderIndex].at(-1);
 
-                if (state.selectedCard.card.colour == lastCard.colour) { return false; }
-                if (state.selectedCard.card.Difference(lastCard) != -1) { return false; }
+                if (selectedCard.card.colour == lastCard.colour) { return false; }
+                if (selectedCard.card.Difference(lastCard) != -1) { return false; }
                 break;
         }
 
-        switch (state.selectedCard.placeholderType) {
+        switch (selectedCard.placeholderType) {
             case "foundationPile":
-                state.solitaireManager.MoveFromFoundationPile(
-                    state.selectedCard.placeholderIndex,
-                    placedCard.placeholderIndex);
+                CommandManager.Instance.Invoke({
+                    Action: () =>
+                        state.solitaireManager.MoveFromFoundationPile(
+                            selectedCard.placeholderIndex,
+                            placedCard.placeholderIndex),
+
+                    ReversedAction: () =>
+                        state.solitaireManager.ClaimFromPlayingPile(
+                            placedCard.placeholderIndex),
+                });
                 break;
 
-            case "reservedPile":
+            case "reservedCards":
+                let reservedCards: Array<Card> = [...state.solitaireManager.reservedCards];
+
                 switch (placedCard.placeholderType) {
                     case "foundationPile":
-                        state.solitaireManager.ClaimFromReservedPile();
+                        let foundationPile: Array<Card> =
+                            [...state.solitaireManager.foundationPiles[placedCard.placeholderIndex]];
+
+                        CommandManager.Instance.Invoke({
+                            Action: () =>
+                                state.solitaireManager.ClaimFromReservedCards(),
+
+                            ReversedAction: () => {
+                                state.solitaireManager.reservedCards = [...reservedCards];
+                                state.solitaireManager.foundationPiles[placedCard.placeholderIndex] =
+                                    [...foundationPile];
+                            },
+                        });
                         break;
 
                     case "playingPile":
-                        state.solitaireManager.DrawFromReservedPile(
-                            placedCard.placeholderIndex);
+                        let playingPile: Array<Card> =
+                            [...state.solitaireManager.playingPiles[placedCard.placeholderIndex]];
+
+                        CommandManager.Instance.Invoke({
+                            Action: () =>
+                                state.solitaireManager.DrawFromReservedCards(
+                                    placedCard.placeholderIndex),
+
+                            ReversedAction: () => {
+                                state.solitaireManager.reservedCards = [...reservedCards];
+                                state.solitaireManager.playingPiles[placedCard.placeholderIndex] =
+                                    [...playingPile];
+                            },
+                        });
                         break;
                 } break;
 
             case "playingPile":
+                let wasCardFirstShown: boolean =
+                    selectedCard.cardIndex == state.playingPileShownCardCounts[
+                    selectedCard.placeholderIndex] - 1;
+
                 switch (placedCard.placeholderType) {
                     case "foundationPile":
-                        state.solitaireManager.ClaimFromPlayingPile(
-                            state.selectedCard.placeholderIndex);
+                        CommandManager.Instance.Invoke({
+                            Action: () =>
+                                state.solitaireManager.ClaimFromPlayingPile(
+                                    selectedCard.placeholderIndex),
+
+                            ReversedAction: () => {
+                                state.solitaireManager.MoveFromFoundationPile(
+                                    placedCard.placeholderIndex,
+                                    selectedCard.placeholderIndex);
+
+                                if (!wasCardFirstShown) { return; }
+                                state.playingPileShownCardCounts[selectedCard.placeholderIndex]++;
+                            },
+                        });
                         break;
 
                     case "playingPile":
-                        state.solitaireManager.MoveFromPlayingPile(
-                            state.selectedCard.placeholderIndex,
-                            placedCard.placeholderIndex,
-                            state.selectedCard.cardIndex);
+                        let cardIndex = state.solitaireManager.playingPiles[
+                            placedCard.placeholderIndex].length;
+
+                        CommandManager.Instance.Invoke({
+                            Action: () =>
+                                state.solitaireManager.MoveFromPlayingPile(
+                                    selectedCard.placeholderIndex,
+                                    placedCard.placeholderIndex,
+                                    selectedCard.cardIndex),
+
+                            ReversedAction: () => {
+                                state.solitaireManager.MoveFromPlayingPile(
+                                    placedCard.placeholderIndex,
+                                    selectedCard.placeholderIndex,
+                                    cardIndex);
+
+                                if (!wasCardFirstShown) { return; }
+                                state.playingPileShownCardCounts[selectedCard.placeholderIndex]++;
+                            },
+                        });
                         break;
                 } break;
         }
 
-        setState({
-            ...state,
-            solitaireManager: state.solitaireManager,
-        });
-
+        setState({ ...state });
         return true;
     }
 
@@ -213,6 +338,30 @@ export default function Gameboard() {
         document.querySelectorAll(".card-element:not(:last-of-type):not(.flipped)")
             .forEach(cardElement =>
                 cardElement.classList.add("flipped"));
+    }
+
+    function Undo(): void {
+        CommandManager.Instance.Undo();
+        setState({ ...state });
+    }
+
+    function Redo(): void {
+        CommandManager.Instance.Redo();
+        setState({ ...state });
+    }
+
+    function setPlayingPileLengths(setter: (previousValue: Array<number>) => Array<number>): void {
+        state.playingPileLengths =
+            setter(state.playingPileLengths);
+
+        setState({ ...state });
+    }
+
+    function setPlayingPileShownCardCounts(setter: (previousValue: Array<number>) => Array<number>): void {
+        state.playingPileShownCardCounts =
+            setter(state.playingPileShownCardCounts);
+
+        setState({ ...state });
     }
 
     return (

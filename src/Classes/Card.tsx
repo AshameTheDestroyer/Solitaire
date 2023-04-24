@@ -32,7 +32,7 @@ export default class Card {
         return this.digit == CardDigit.Ace ? 1 : Number.parseInt(this.digit);
     }
 
-    private get isJoker(): boolean {
+    public get isJoker(): boolean {
         return [CardType.ColourfulJoker, CardType.ColourlessJoker].includes(this.type);
     }
 
