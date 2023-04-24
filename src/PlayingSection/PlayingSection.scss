@@ -4,19 +4,17 @@
     --delay: 0ms;
 
     display: flex;
+    flex-grow: 1;
+
+    padding: 2rem;
 
     &>section {
-        $padding: 2rem;
-
-        height: calc(100% - $padding * 2);
-        width: calc(100% - $padding * 2);
+        width: 100%;
 
         display: grid;
         grid-template-columns: repeat(7, auto);
         place-content: start center;
         gap: 1rem;
-
-        padding: $padding;
 
         overflow: auto;
 
