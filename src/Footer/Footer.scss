@@ -1,3 +1,5 @@
+@use "../Page/Page.scss";
+
 #gameboard-footer {
     display: flex;
     place-items: center;
@@ -78,6 +80,19 @@
                     grid-column: calc($i + 1);
                 }
             }
+        }
+    }
+}
+
+@media (width <=Page.$second-screen-width) {
+
+    #gameboard-footer {
+        font-size: 1.2rem;
+
+        gap: 0rem;
+
+        section .command-button {
+            width: 4rem;
         }
     }
 }
