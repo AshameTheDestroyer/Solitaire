@@ -25,3 +25,8 @@ I added light/dark theming, page reloading reassurance whilst playing, and a sic
 
 ### v8. Landing Page
 Nothing's fancy, OK JK, maybe only the landing page that I added to the website, and fixed some minor issues too.
+
+### v9. Command Manager
+This might be the last version apparently, it's the best one so far tho.
+I've added a Command Manager that allowes the player to UNDO and REDO commands they did in the game, such as moving or drawing cards, which is incredible in my honest opinion… And as well as usual, I fixed some bugs that was literally bugging the hell outta me.
+Now the game is at its best version so far 🔥.
