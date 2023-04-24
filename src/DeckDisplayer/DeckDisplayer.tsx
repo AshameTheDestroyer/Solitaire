@@ -58,7 +58,7 @@ function Header({
             <nav> {
                 Object.getOwnPropertyNames(new Card({ digit: CardDigit.Ace, type: CardType.Heart }))
                     .map((property, i) =>
-                        <button className={`grouping-button ${i == 1 ? "selected" : ""}`}
+                        <button className={`grouping-button ${i == 0 ? "selected" : ""}`}
                             key={property}
                             onClick={e => ButtonClick(e, property)}>
                             {property}
