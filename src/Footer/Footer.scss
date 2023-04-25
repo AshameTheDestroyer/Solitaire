@@ -2,7 +2,8 @@
 
 #gameboard-footer {
     display: flex;
-    place-items: center;
+    flex-wrap: wrap;
+    place-content: space-between;
     gap: 2rem;
 
     padding: 1.5rem;
@@ -69,9 +70,6 @@
         }
 
         &:last-child {
-            width: 100%;
-
-            place-content: end;
             gap: 2rem;
 
             @for $i from 1 through 2 {

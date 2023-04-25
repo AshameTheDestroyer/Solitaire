@@ -14,7 +14,7 @@ const SMALL_DENSITY_PERCENTAGE: number = 0.5,
 export default function Header() {
     const state = useContext(GameboardContext);
 
-    const PLACEHOLDER_ELEMENT_CONTAINER_REF = useRef<HTMLElement>();
+    const DECK_CONTAINER_REF = useRef<HTMLElement>();
 
     useEffect(() => {
         CheckWinnigState();
@@ -31,7 +31,8 @@ export default function Header() {
 
     function UpdateDeckElementZIndex(): void {
         const DECK_ELEMENT: HTMLElement =
-            (PLACEHOLDER_ELEMENT_CONTAINER_REF.current as HTMLElement).firstElementChild as HTMLElement;
+            (DECK_CONTAINER_REF.current as HTMLElement)
+                .firstElementChild as HTMLElement;
 
         DECK_ELEMENT.style.zIndex = state.solitaireManager.deck.length > 0 ? "1" : "0";
     }
@@ -53,7 +54,7 @@ export default function Header() {
 
     return (
         <header id="gameboard-header">
-            <section ref={PLACEHOLDER_ELEMENT_CONTAINER_REF}>
+            <section ref={DECK_CONTAINER_REF} id="deck-container" >
                 <CardPlaceholderElement
                     type="deck"
                     useLighterTone={true}
@@ -76,7 +77,7 @@ export default function Header() {
                     onLastCardClick={(e, placedCard) => state.SelectCard(placedCard)} />
             </section>
 
-            <section> {
+            <section id="foundation-pile-container" > {
                 Object.values(CardType)
                     .filter(cardType =>
                         !cardType.toString().includes("Joker"))

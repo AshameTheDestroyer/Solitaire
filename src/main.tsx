@@ -4,6 +4,7 @@ import { CSSProperties, createContext, useEffect, useState } from "react";
 
 import Page from "./Page/Page";
 import Gameboard from "./Gameboard/Gameboard";
+import SetKeydownEvents from "./Classes/KeyEventSetter";
 import DeckDisplayer from "./DeckDisplayer/DeckDisplayer";
 
 import "./index.scss";
@@ -32,8 +33,9 @@ const lightThemeStyle: React.CSSProperties = {
 
 const ROOT: HTMLElement = document.querySelector(":root");
 
-ReactDOM.createRoot(document.getElementById("root")
-    ?? document.body).render(<Index />);
+ReactDOM.createRoot(
+    document.getElementById("root") ?? document.body)
+    .render(<Index />);
 
 function Index() {
     const [state, setState] = useState<MainStateProps>({
@@ -44,6 +46,8 @@ function Index() {
 
     useEffect(() => {
         document.body.classList.toggle("dark-themed");
+
+        SetKeydownEvents();
     }, []);
 
 

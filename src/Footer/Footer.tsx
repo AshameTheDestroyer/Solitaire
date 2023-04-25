@@ -68,12 +68,14 @@ export default function Footer() {
 
             <section>
                 <CustomButton
+                    id="reset-button"
                     isStatic
                     text="Reset"
                     confirmationMessage="Are you sure you wanna reset the game?"
                     onClick={e => (state.Reset(), setTimer(new Date("0")))} />
 
                 <CustomButton
+                    id="home-button"
                     href="/"
                     text="Home"
                     confirmationMessage="Are you sure you wanna leave the game?" />
