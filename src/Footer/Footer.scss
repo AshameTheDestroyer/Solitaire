@@ -82,7 +82,7 @@
     }
 }
 
-@media (width <=Page.$second-screen-width) {
+@media (max-width: Page.$second-screen-width) {
 
     #gameboard-footer {
         font-size: 1.2rem;

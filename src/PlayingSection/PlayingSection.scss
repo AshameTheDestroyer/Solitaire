@@ -77,7 +77,7 @@
     }
 }
 
-@media (width >=Page.$second-screen-width) {
+@media (min-width: Page.$second-screen-width) {
 
     #playing-section {
 

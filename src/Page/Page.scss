@@ -139,7 +139,7 @@ $reserved-card-count: 3;
     --icon-url: url("../Icons/dark_mode_2.svg") !important;
 }
 
-@media (width >=$first-screen-width) {
+@media (min-width: $first-screen-width) {
 
     #page>main {
         width: 100%;
