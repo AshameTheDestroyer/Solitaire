@@ -34,7 +34,7 @@ type HeaderProps = {
 function Header({
     setGroupingPredicate
 }: HeaderProps) {
-    function ButtonClick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>, property: String) {
+    function ButtonClick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>, property: keyof Card) {
         const GROUPING_BUTTONS =
             document.querySelectorAll(".grouping-button");
 
@@ -43,8 +43,7 @@ function Header({
 
         e.currentTarget.classList.add("selected");
 
-        setGroupingPredicate((value: React.SetStateAction<((card: Card) => any) | undefined>) =>
-            // @ts-ignore
+        setGroupingPredicate((value: React.SetStateAction<((card: Card) => keyof Card)>) =>
             (card: Card): any => card[property]);
     }
 
@@ -57,7 +56,7 @@ function Header({
 
             <nav> {
                 Object.getOwnPropertyNames(new Card({ digit: CardDigit.Ace, type: CardType.Heart }))
-                    .map((property, i) =>
+                    .map((property: keyof Card, i) =>
                         <button className={`grouping-button ${i == 0 ? "selected" : ""}`}
                             key={property}
                             onClick={e => ButtonClick(e, property)}>
